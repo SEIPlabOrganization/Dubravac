@@ -1,0 +1,65 @@
+@CHARSET "UTF-8";
+html, body, form, fieldset, legend, ol, li {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #ffffff;
+	color: #000000;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	padding: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 700px;
+}
+
+form#Show {
+	background: #C0C0C0;
+	border-radius: 5px;
+	padding: 20px;
+}
+		
+form#Show fieldset {
+	border: none;
+	margin-bottom: 10px;
+}
+		
+form#Show fieldset:last-of-type {
+	margin-bottom: 0;
+}
+			
+form#Show legend {
+	color: #000000;
+	font-size: 16px;
+	font-weight: bold;
+	font-style: italic;
+	padding-bottom: 14px;
+}
+
+form#Show ol li {
+	font-size: 15px;
+	background: #b9cf6a;
+	background: rgba(255,255,255,.3);
+	border-color: #FFFFFF;
+	border-color: rgba(255,255,255,.6);
+	border-style: solid;
+	border-width: 2px;
+	border-radius: 5px;
+	line-height: 30px;
+	list-style: none;
+	padding: 5px 10px;
+	margin-bottom: 2px;
+}
+
+form#Show span {
+	float: left;
+	font-size: 15px;
+	width: 140px;
+	color:#240073;
+}
+
+hr {
+	color: white;
+	background-color: black;
+}

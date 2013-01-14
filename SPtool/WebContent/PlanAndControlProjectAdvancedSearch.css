@@ -1,0 +1,119 @@
+html, body, form, fieldset, legend, ol, li {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #ffffff;
+	color: #000000;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	padding: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 600px;
+}
+
+form#advancedSearch {
+	background: #C0C0C0;
+	border-radius: 5px;
+	padding: 20px;
+}
+		
+form#advancedSearch fieldset {
+	border: none;
+	margin-bottom: 10px;
+}
+		
+form#advancedSearch fieldset:last-of-type {
+	margin-bottom: 0;
+}
+			
+form#advancedSearch legend {
+	color: #000000;
+	font-size: 18px;
+	font-weight: bold;
+	padding-bottom: 14px;
+}
+
+form#advancedSearch ol li {
+	background: #b9cf6a;
+	background: rgba(255,255,255,.3);
+	border-color: #FFFFFF;
+	border-color: rgba(255,255,255,.6);
+	border-style: solid;
+	border-width: 2px;
+	border-radius: 5px;
+	line-height: 30px;
+	list-style: none;
+	padding: 5px 10px;
+	margin-bottom: 2px;
+}
+
+form#advancedSearch label {
+	float: left;
+	font-size: 13px;
+	width: 110px;
+}
+
+form#advancedSearch select {
+	background: #ffffff;
+	border: none;
+	border-radius: 3px;
+	font: italic 13px Arial, "Arial", Arial, Sans-serif;
+	outline: none;
+	padding: 5px;
+	width: 220px;
+}
+		
+form#advancedSearch select:focus {
+	background: #F5F5F5;
+}
+
+form#advancedSearch input[type=submit] {
+	margin-left: auto;
+	margin-right: auto;
+	background: #3B3B3B;
+	border: none;
+	border-radius: 20px;
+	color: #ffffff;
+	display: block;
+	font: 18px Georgia, "Times New Roman", Times, serif;
+	letter-spacing: 1px;
+	margin: auto;
+	padding: 7px 25px;
+	text-shadow: 0 1px 1px #000000;
+	text-transform: uppercase;
+}
+
+form#advancedSearch input[type=reset] {
+	border: none;
+    display: inline;
+    margin: 0em;
+    padding: 0em;
+    outline: none;
+    outline-offset: 0em;
+    background: none;
+    color: blue;
+    cursor: pointer;
+    font: inherit;
+	font-style:italic;
+    text-decoration: underline;
+}
+
+form#advancedSearch input[type=reset]:focus {
+    color: purple;
+}
+
+form#advancedSearch input[type=reset]:active{
+    color: red;
+}
+		
+form#advancedSearch input[type=submit]:hover {
+	background: #242424;
+	cursor: pointer;
+}
+
+form#advancedSearch input[type=submit]:active {
+	background: #3B3B3B;
+	cursor: pointer;
+}
