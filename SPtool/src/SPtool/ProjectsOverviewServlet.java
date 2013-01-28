@@ -24,200 +24,199 @@ public class ProjectsOverviewServlet extends HttpServlet
 		{
 			PrintWriter out = response.getWriter();
 			MySQLcon database = new MySQLcon("jdbc:mysql://localhost:3306/mydb", "root", "root");
-			ResultSet acad_years = database.Quer("select distinct Acad_year from Project order by Acad_year DESC");
 			
 			
-			out.print("<!DOCTYPE html>");
-			out.print("<html>");
-			out.print("<head>");
+			out.println("<!DOCTYPE html>");
+			out.println("<html>");
+			out.println("<head>");
 			//
-			out.print("<link rel=\"stylesheet\" href=\"ProjectsOverview.css\" />");
-			out.print("<link href=\"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css\" rel=\"stylesheet\" type=\"text/css\"/>");
-			out.print("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js\"></script>");
-			out.print("<script src=\"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js\"></script>");
-			out.print("</head>");
-			out.print("<body style=\"font-size:62.5%;\">");
+			out.println("<link rel='stylesheet' href='ProjectsOverview.css' />");
+			out.println("<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'/>");
+			out.println("<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js'></script>");
+			out.println("<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>");
+			out.println("</head>");
+			out.println("<body style='font-size:62.5%;'>");
 			
 			
+			
+			out.println("<script type=\"text/javascript\">");
+			out.println("$(document).ready(function() {");
+			out.println("$(\"#tabs\").tabs();");
+			out.println("});");
 			/*
-			out.print("<script type=\"text/javascript\">");
-			out.print("$(document).ready(function() {");
-			out.print("$(\"#tabs\").tabs();");
-			out.print("});");
-			
-			out.print("function getMaxY() {");
-			out.print("var max = 0;");
-			out.print("for(var i = 0; i < data.values.length; i ++) {");
-			out.print("if(data.values[i].Y > max) {");
-			out.print("max = data.values[i].Y; } }");
-                out.print("max += 10 - max % 10;");
-                out.print("return max; }");
+			out.println("function getMaxY() {");
+			out.println("var max = 0;");
+			out.println("for(var i = 0; i < data.values.length; i ++) {");
+			out.println("if(data.values[i].Y > max) {");
+			out.println("max = data.values[i].Y; } }");
+                out.println("max += 10 - max % 10;");
+                out.println("return max; }");
                 
-            out.print("function getXPixel(val) {");
-                out.print("return ((graph.width - xPadding-15) / data.values.length) * val + (xPadding * 1.5); }");
+            out.println("function getXPixel(val) {");
+                out.println("return ((graph.width - xPadding-15) / data.values.length) * val + (xPadding * 1.5); }");
                 
-            out.print("function getYPixel(val) {");
-                out.print("return graph.height - (((graph.height - yPadding-22) / getMaxY()) * val) - yPadding; }");
+            out.println("function getYPixel(val) {");
+                out.println("return graph.height - (((graph.height - yPadding-22) / getMaxY()) * val) - yPadding; }");
 			
 			
 			
 			
 			
-			out.print("function drawGraph() {");
-				out.print("xPadding = 30;");
-				out.print("yPadding = 20;");
-				out.print("data = { values:[");
-					out.print("{ X: \"1\", Y: 6.25 },");
-					out.print("{ X: \"2\", Y: 6.25*2 },");
-					out.print("{ X: \"3\", Y: 6.25*3 },");
-					out.print("{ X: \"4\", Y: 6.25*4 },");
-					out.print("{ X: \"5\", Y: 6.25*5 },");
-					out.print("{ X: \"6\", Y: 6.25*6 },");
-					out.print("{ X: \"7\", Y: 6.25*7 },");
-					out.print("{ X: \"8\", Y: 6.25*8 },");
-					out.print("{ X: \"9\", Y: 6.25*9 },");
-					out.print("{ X: \"10\", Y: 6.25*10 },");
-					out.print("{ X: \"11\", Y: 6.25*11 },");
-					out.print("{ X: \"12\", Y: 6.25*12 },");
-					out.print("{ X: \"13\", Y: 6.25*13 },");
-					out.print("{ X: \"14\", Y: 6.25*14 },");
-					out.print("{ X: \"15\", Y: 6.25*15 },");
-					out.print("{ X: \"16\", Y: 6.25*16 },");
-				out.print("]};");
+			out.println("function drawGraph() {");
+				out.println("xPadding = 30;");
+				out.println("yPadding = 20;");
+				out.println("data = { values:[");
+					out.println("{ X: \"1\", Y: 6.25 },");
+					out.println("{ X: \"2\", Y: 6.25*2 },");
+					out.println("{ X: \"3\", Y: 6.25*3 },");
+					out.println("{ X: \"4\", Y: 6.25*4 },");
+					out.println("{ X: \"5\", Y: 6.25*5 },");
+					out.println("{ X: \"6\", Y: 6.25*6 },");
+					out.println("{ X: \"7\", Y: 6.25*7 },");
+					out.println("{ X: \"8\", Y: 6.25*8 },");
+					out.println("{ X: \"9\", Y: 6.25*9 },");
+					out.println("{ X: \"10\", Y: 6.25*10 },");
+					out.println("{ X: \"11\", Y: 6.25*11 },");
+					out.println("{ X: \"12\", Y: 6.25*12 },");
+					out.println("{ X: \"13\", Y: 6.25*13 },");
+					out.println("{ X: \"14\", Y: 6.25*14 },");
+					out.println("{ X: \"15\", Y: 6.25*15 },");
+					out.println("{ X: \"16\", Y: 6.25*16 },");
+				out.println("]};");
 				
-				out.print("graph = document.getElementById('graph10');");
-				out.print("c = graph.getContext(\"2d\");  ");          
-				out.print("c.lineWidth = 2;");
-				out.print("c.strokeStyle = '#333';");
-				out.print("c.font = 'italic 8pt sans-serif';");
-				out.print("c.textAlign = \"center\";");
+				out.println("graph = document.getElementById('graph10');");
+				out.println("c = graph.getContext(\"2d\");  ");          
+				out.println("c.lineWidth = 2;");
+				out.println("c.strokeStyle = '#333';");
+				out.println("c.font = 'italic 8pt sans-serif';");
+				out.println("c.textAlign = \"center\";");
 				
-				out.print("c.beginPath();");
-				out.print("c.moveTo(xPadding-5,12);");
-				out.print("c.lineTo(xPadding, 0);");
-				out.print("c.lineTo(xPadding+5, 12);");
-				out.print("c.stroke();");
-				out.print("c.beginPath();");
-				out.print("c.moveTo(xPadding, 0);");
-				out.print("c.lineTo(xPadding, graph.height - yPadding);");
-				out.print("c.lineTo(graph.width, graph.height - yPadding);");
-				out.print("c.lineTo(graph.width-12, graph.height - yPadding-5);");
-				out.print("c.stroke();");
-				out.print("c.beginPath();");
-				out.print("c.moveTo(graph.width, graph.height - yPadding);");
-				out.print("c.lineTo(graph.width-12, graph.height - yPadding+5);");
-				out.print("c.stroke();");
+				out.println("c.beginPath();");
+				out.println("c.moveTo(xPadding-5,12);");
+				out.println("c.lineTo(xPadding, 0);");
+				out.println("c.lineTo(xPadding+5, 12);");
+				out.println("c.stroke();");
+				out.println("c.beginPath();");
+				out.println("c.moveTo(xPadding, 0);");
+				out.println("c.lineTo(xPadding, graph.height - yPadding);");
+				out.println("c.lineTo(graph.width, graph.height - yPadding);");
+				out.println("c.lineTo(graph.width-12, graph.height - yPadding-5);");
+				out.println("c.stroke();");
+				out.println("c.beginPath();");
+				out.println("c.moveTo(graph.width, graph.height - yPadding);");
+				out.println("c.lineTo(graph.width-12, graph.height - yPadding+5);");
+				out.println("c.stroke();");
 				
-				out.print("for(var i = 0; i < data.values.length; i ++) {");
-					out.print("c.fillText(data.values[i].X, getXPixel(i), graph.height - yPadding + 20);");
-				out.print("}");
-				out.print("c.font = 'bold italic 12pt times-new-roman';");
-				out.print("c.fillText(\"WEEK\", getXPixel(data.values.length-1), graph.height - yPadding - 10);");
-				out.print("c.font = 'italic 8pt sans-serif';");
+				out.println("for(var i = 0; i < data.values.length; i ++) {");
+					out.println("c.fillText(data.values[i].X, getXPixel(i), graph.height - yPadding + 20);");
+				out.println("}");
+				out.println("c.font = 'bold italic 12pt times-new-roman';");
+				out.println("c.fillText(\"WEEK\", getXPixel(data.values.length-1), graph.height - yPadding - 10);");
+				out.println("c.font = 'italic 8pt sans-serif';");
 				
-				out.print("c.textAlign = \"right\";");
-				out.print("c.textBaseline = \"middle\";");
+				out.println("c.textAlign = \"right\";");
+				out.println("c.textBaseline = \"middle\";");
 				
-				out.print("for(var i = 0; i < getMaxY(); i += 10) {");
-					out.print("c.fillText(i, xPadding - 10, getYPixel(i));");
-				out.print("}");
-				out.print("c.font = 'bold italic 13pt times-new-roman';");
-				out.print("c.fillText(\"%\", xPadding -10, getYPixel(getMaxY())-10);");
-				out.print("c.font = 'italic 8pt sans-serif';");
+				out.println("for(var i = 0; i < getMaxY(); i += 10) {");
+					out.println("c.fillText(i, xPadding - 10, getYPixel(i));");
+				out.println("}");
+				out.println("c.font = 'bold italic 13pt times-new-roman';");
+				out.println("c.fillText(\"%\", xPadding -10, getYPixel(getMaxY())-10);");
+				out.println("c.font = 'italic 8pt sans-serif';");
 				
-				out.print("c.strokeStyle = '#f00';");
+				out.println("c.strokeStyle = '#f00';");
 				
-				out.print("c.beginPath();");
-				out.print("c.moveTo(getXPixel(0), getYPixel(data.values[0].Y));");
-				out.print("for(var i = 1; i < data.values.length; i ++) {");
-					out.print("c.lineTo(getXPixel(i), getYPixel(data.values[i].Y));");
-				out.print("}");
-				out.print("c.stroke();");
+				out.println("c.beginPath();");
+				out.println("c.moveTo(getXPixel(0), getYPixel(data.values[0].Y));");
+				out.println("for(var i = 1; i < data.values.length; i ++) {");
+					out.println("c.lineTo(getXPixel(i), getYPixel(data.values[i].Y));");
+				out.println("}");
+				out.println("c.stroke();");
 				
-				out.print("c.fillStyle = '#333';");
+				out.println("c.fillStyle = '#333';");
 				
-				out.print("for(var i = 0; i < data.values.length; i ++) { ");
-					out.print("c.beginPath();");
-					out.print("c.arc(getXPixel(i), getYPixel(data.values[i].Y), 3, 0, Math.PI * 2, true);");
-					out.print("c.fill();");
-				out.print("}");
-			out.print("}");
+				out.println("for(var i = 0; i < data.values.length; i ++) { ");
+					out.println("c.beginPath();");
+					out.println("c.arc(getXPixel(i), getYPixel(data.values[i].Y), 3, 0, Math.PI * 2, true);");
+					out.println("c.fill();");
+				out.println("}");
+			out.println("}");
 			*/
 			
 			
 			
-			out.print("function toggleMe(a) {");
-			out.print("var button = document.getElementById(\"button\" + a).innerHTML;");
-			out.print("var content = document.getElementById(\"content\" + a);");
+			out.println("function toggleMe(a) {");
+			out.println("var button = document.getElementById('button' + a).innerHTML;");
+			out.println("var content = document.getElementById('content' + a);");
 			
-			out.print("if(content.style.display==\"none\")");
-			out.print("{");
-			out.print("button=button.replace(\"+\", \"-\");");
-			out.print("document.getElementById(\"button\" + a).innerHTML = button;");
-			out.print("content.style.display=\"block\";");
-			out.print("}");
-			out.print("else {");
-			out.print("button=button.replace(\"-\", \"+\");");
-			out.print("document.getElementById(\"button\" + a).innerHTML = button;");
-			out.print("content.style.display=\"none\";");
-			out.print("}");
+			out.println("if(content.style.display==\"none\")");
+			out.println("{");
+			out.println("button=button.replace(\"+\", \"-\");");
+			out.println("document.getElementById(\"button\" + a).innerHTML = button;");
+			out.println("content.style.display=\"block\";");
+			out.println("}");
+			out.println("else {");
+			out.println("button=button.replace(\"-\", \"+\");");
+			out.println("document.getElementById(\"button\" + a).innerHTML = button;");
+			out.println("content.style.display=\"none\";");
+			out.println("}");
 			  
-			out.print("return true;");
-			out.print("}");
+			out.println("return true;");
+			out.println("}");
 			
-			out.print("</script>");
+			out.println("</script>");
 			
-			out.print("<div id=\"tabs\">");
-			out.print("<ul>");
+			out.println("<div id='tabs'>");
+			out.println("<ul>");
 			
-			
+			ResultSet acad_years = database.Quer("select distinct Acad_year from Project order by Acad_year DESC");
 			while(acad_years.next())
 			{
-				out.print("<li><a href=\"#" + acad_years.getString("Acad_year") + "\">" + acad_years.getString("Acad_year") + "</a></li>");
+				out.println("<li><a href=\"#" + acad_years.getString("Acad_year") + "\">" + acad_years.getString("Acad_year") + "</a></li>");
 			}
-			out.print("</ul>");
+			out.println("</ul>");
 			
 			acad_years.beforeFirst();
 
 			while(acad_years.next())
 			{
-				out.print("<div id=\"" + acad_years.getString("Acad_year") + "\">");
+				out.println("<div id=\"" + acad_years.getString("Acad_year") + "\">");
 				
 				ResultSet projects = database.Quer("select * from Project, Team where (Project.Team_idTeam=Team.idTeam) and Project.Acad_year=\"" + acad_years.getString("Acad_year") + "\"");
 
 				while(projects.next())
 				{
-					ResultSet team_leader = database.Quer("select Users.Name, Users.Surname from Users, Users_team, Team, Project, Responsibility where Users_team.Team_idTeam = Team.idTeam and Users_team.Users_idUsers = Users.idUsers and Users_team.Responsibility_idResponsibility=Responsibility.idResponsibility and Project.Team_idTeam=Team.idTeam and Responsibility.Name='Team Leader' and Project.Name=\"" + projects.getString("Project.Name") + "\" and Team.Name=\"" + projects.getString("Team.Name") + "\"");
-					out.print("<table border=\"0\">");
-					out.print("<tr id=\"buttons\">");
-					out.print("<td onclick=\"return toggleMe(" + projects.getString("idProject") + ")\"> <big id=\"button" + projects.getString("idProject") + "\"> <b>+ " + projects.getString("project.Name") + "</b> </big> </td>");
-					out.print("</tr>");
-					out.print("<tr>");
-					out.print("<td>Project no: " + projects.getString("idProject") + " | Team name: " + projects.getString("team.Name"));
-					if (team_leader.next()) out.print(" | Team Leader: " + team_leader.getString("Name") + " " + team_leader.getString("Surname"));
-					out.print("</td>");
-					out.print("</tr>");
-					out.print("<tr>");
-					out.print("<td id=\"content" + projects.getString("idProject") + "\" style=\"display:none\">");
-					//out.print("<canvas id=\"graph" + projects.getString("idProject") + "\" width=\"450\" height=\"250\">");
-			        //out.print("</canvas>");
-					//out.print("<script type=\"text/javascript\">");
+					ResultSet project_manager = database.Quer("select Users.Name, Users.Surname from Users, Users_team, Team, Project, Responsibility where Users_team.Team_idTeam = Team.idTeam and Users_team.Users_idUsers = Users.idUsers and Users_team.Responsibility_idResponsibility=Responsibility.idResponsibility and Project.Team_idTeam=Team.idTeam and Responsibility.idResponsibility=1 and Project.Name=\"" + projects.getString("Project.Name") + "\" and Team.Name=\"" + projects.getString("Team.Name") + "\"");
+					out.println("<table border=\"0\">");
+					out.println("<tr id=\"buttons\">");
+					out.println("<td onclick=\"return toggleMe(" + projects.getString("idProject") + ")\"> <big id=\"button" + projects.getString("idProject") + "\"> <b>+ " + projects.getString("project.Name") + "</b> </big> </td>");
+					out.println("</tr>");
+					out.println("<tr>");
+					out.println("<td>Project no: " + projects.getString("idProject") + " | Team name: " + projects.getString("team.Name"));
+					if (project_manager.next()) out.println(" | Project Manager: " + project_manager.getString("Name") + " " + project_manager.getString("Surname"));
+					out.println("</td>");
+					out.println("</tr>");
+					out.println("<tr>");
+					out.println("<td id=\"content" + projects.getString("idProject") + "\" style=\"display:none\">");
+					//out.println("<canvas id=\"graph" + projects.getString("idProject") + "\" width=\"450\" height=\"250\">");
+			        //out.println("</canvas>");
+					//out.println("<script type=\"text/javascript\">");
 					
-			        //out.print("drawGraph();");
+			        //out.println("drawGraph();");
 			        
-					//out.print("</script>");
-					out.print("<iframe id=\"iframe" + projects.getString("idProject") + "\" src=\"canvas_graph.jsp\" frameborder=\"0\" width=\"472\" height=\"272\"></iframe>");
-					out.print("</td>");
-					out.print("</tr>");
-					out.print("</table>");
-					team_leader.close();
+					//out.println("</script>");
+					out.println("<iframe id=\"iframe" + projects.getString("idProject") + "\" src=\"canvas_graph.jsp\" frameborder=\"0\" width=\"472\" height=\"272\"></iframe>");
+					out.println("</td>");
+					out.println("</tr>");
+					out.println("</table>");
+					project_manager.close();
 				}
-				out.print("</div>");
+				out.println("</div>");
 				projects.close();
 			}
-			out.print("</div>");
-			out.print("</body>");
-			out.print("</html>");
+			out.println("</div>");
+			out.println("</body>");
+			out.println("</html>");
 			acad_years.close();
 			
 			

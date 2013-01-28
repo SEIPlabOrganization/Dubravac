@@ -10,32 +10,32 @@ body {
 	padding: 20px;
 	margin-left: auto;
 	margin-right: auto;
-	width: 600px;
+	width: 700px;
 }
 
-form#advancedSearch {
+form#form {
 	background: #C0C0C0;
 	border-radius: 5px;
 	padding: 20px;
 }
 		
-form#advancedSearch fieldset {
+form#form fieldset {
 	border: none;
 	margin-bottom: 10px;
 }
 		
-form#advancedSearch fieldset:last-of-type {
+form#form fieldset:last-of-type {
 	margin-bottom: 0;
 }
 			
-form#advancedSearch legend {
+form#form legend {
 	color: #000000;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: bold;
 	padding-bottom: 14px;
 }
 
-form#advancedSearch ol li {
+form#form ol li {
 	background: #b9cf6a;
 	background: rgba(255,255,255,.3);
 	border-color: #FFFFFF;
@@ -49,13 +49,18 @@ form#advancedSearch ol li {
 	margin-bottom: 2px;
 }
 
-form#advancedSearch label {
+form#form label {
 	float: left;
 	font-size: 13px;
 	width: 110px;
 }
 
-form#advancedSearch select {
+form#form td {
+	font-size: 13px;
+	width: 110px;
+}
+
+form#form select, form#form input:not([type=radio]) {
 	background: #ffffff;
 	border: none;
 	border-radius: 3px;
@@ -64,12 +69,21 @@ form#advancedSearch select {
 	padding: 5px;
 	width: 220px;
 }
-		
-form#advancedSearch select:focus {
+
+form#form textarea {
+	background: #ffffff;
+	border: none;
+	border-radius: 3px;
+	font: italic 13px Arial, "Arial", Arial, Sans-serif;
+	outline: none;
+	padding: 5px;
+}
+
+form#form select:focus, form#form textarea:focus, form#form input:not([type=submit]):focus {
 	background: #F5F5F5;
 }
 
-form#advancedSearch input[type=submit] {
+form#form input[type=submit] {
 	margin-left: auto;
 	margin-right: auto;
 	background: #3B3B3B;
@@ -85,7 +99,7 @@ form#advancedSearch input[type=submit] {
 	text-transform: uppercase;
 }
 
-form#advancedSearch input[type=reset] {
+form#form input[type=reset] {
 	border: none;
     display: inline;
     margin: 0em;
@@ -98,22 +112,35 @@ form#advancedSearch input[type=reset] {
     font: inherit;
 	font-style:italic;
     text-decoration: underline;
+    width: auto;
 }
 
-form#advancedSearch input[type=reset]:focus {
+form#form input[type=reset]:focus {
     color: purple;
 }
 
-form#advancedSearch input[type=reset]:active{
+form#form input[type=reset]:active{
     color: red;
 }
 		
-form#advancedSearch input[type=submit]:hover {
+form#form input[type=submit]:hover {
 	background: #242424;
 	cursor: pointer;
 }
 
-form#advancedSearch input[type=submit]:active {
+form#form input[type=submit]:active {
 	background: #3B3B3B;
 	cursor: pointer;
+}
+
+form#form span {
+	float: left;
+	font-size: 15px;
+	width: 140px;
+	color:#240073;
+}
+
+hr {
+	color: white;
+	background-color: black;
 }

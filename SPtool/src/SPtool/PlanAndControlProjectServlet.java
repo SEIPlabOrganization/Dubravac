@@ -30,11 +30,11 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 			 ...
 			 */
 			
-			
 			//inace (ako je ulogiran profesor):
 			if (request.getParameter("projectBasicSearch") != null)
 			{ 
 			    // basic search
+				
 				String project=request.getParameter("projectBasicSearch");
 				String team;
 				byte index = (byte)project.indexOf(";");
@@ -46,19 +46,85 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 			else
 			{
 				// advanced search
-				plan = database.Quer("select team.Name, project.Subject, project.acad_year, project.name, project.description from project,team where project.Team_idTeam=team.idTeam and project.name='fdasfsdaf';");
+
+				String[] projectResults;
+				String query = "select distinct team.Name, project.Subject, project.acad_year, project.name, project.description from project, team ";
+				
+				if (request.getParameterValues("student") != null || request.getParameterValues("projectManager") != null)
+				{
+					query = query + ", responsibility, users, users_team ";
+				}
+				
+				query= query +  "where project.Team_idTeam=team.idTeam and (";
+				
+				if (request.getParameterValues("student") != null || request.getParameterValues("projectManager") != null)
+				{
+					query = query + "responsibility.idResponsibility=users_team.Responsibility_idResponsibility and users.idusers=users_team.users_idusers and users_team.team_idteam=team.idteam) and (";
+				}
+				
+				if (request.getParameterValues("projectName") != null)
+				{
+					projectResults = request.getParameterValues("projectName");
+					for(int i=0; i<projectResults.length; i++)
+				    {
+				        query = query + "project.name='" + projectResults[i] + "' or ";
+				    }
+				}
+				if (request.getParameterValues("teamName") != null)
+				{
+					projectResults = request.getParameterValues("teamName");
+					for(int i=0; i<projectResults.length; i++)
+				    {
+				        query = query + "team.name='" + projectResults[i] + "' or ";
+				    }
+				}
+				if (request.getParameterValues("academicYear") != null)
+				{
+					projectResults = request.getParameterValues("academicYear");
+					for(int i=0; i<projectResults.length; i++)
+				    {
+				        query = query + "project.acad_year='" + projectResults[i] + "' or ";
+				    }
+				}
+				if (request.getParameterValues("projectManager") != null)
+				{
+					projectResults = request.getParameterValues("projectManager");
+					for(int i=0; i<projectResults.length; i++)
+				    {
+						String name=projectResults[i];
+						String surname;
+						byte index = (byte)name.indexOf(";");
+						surname = name.substring(index+1);
+						name = name.substring(0, index);
+						
+						query = query + "(users.name='" + name + "' and users.surname='" + surname + "' and responsibility.idResponsibility=1) or ";
+				    }
+				}
+				if (request.getParameterValues("student") != null)
+				{
+					projectResults = request.getParameterValues("student");
+					for(int i=0; i<projectResults.length; i++)
+				    {
+						String name=projectResults[i];
+						String surname;
+						byte index = (byte)name.indexOf(";");
+						surname = name.substring(index+1);
+						name = name.substring(0, index);
+						
+						query = query + "(users.name='" + name + "' and users.surname='" + surname + "') or ";
+				    }
+				}
+				query = query.substring(0, query.length()-4);
+				query = query + ") order by project.acad_year DESC;";
+				plan = database.Quer(query);
 			}
 			
 			//ako je resultset prazan
 			if (!plan.next())
 			{
-				//ako je ulogiran profesor/asistent redirektat na advancedSearch i prikazat poruku da nema rezultata za trazeni upit
-				
-				//else (ako je ulogiran student)
-				out.print("<script>");
-				out.print("alert(\"Project doesn't exist in database yet!\");");
-				out.print("</script>");
+				//ulogiran student
 				//redirekcija na pocetnu stranicu
+				//response.sendRedirect("/SPtool/pocetna stranica");
 			}
 			//ako resultset nije prazan
 			else
@@ -67,80 +133,176 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 				plan.beforeFirst();
 				while (plan.next()) count++;
 				
+				out.println("<!DOCTYPE html>");
+				out.println("<html>");
+				out.println("<head>");
+				out.println("<link rel='stylesheet' href='style.css' type='text/css'/>");
+				out.println("<title>Plan and control project</title>");
+				
 				if (count == 1)
 				{
 					plan.first();
 					
-					out.print("<!DOCTYPE html>");
-					out.print("<html>");
-					out.print("<head>");
-					out.print("<link rel='stylesheet' href='PlanAndControlProject.css' type='text/css'/>");
-					out.print("<title>Plan and control project</title>");
-					out.print("</head>");
-					out.print("<body>");
+					out.println("</head>");
+					out.println("<body>");
 
-					out.print("<form id='Show'>");
+					out.println("<form id='form'>");
 						
-					out.print("<fieldset>");
-					out.print("<legend>Project details:</legend>");
-					out.print("<ol>");
-					out.print("<li>");
-					out.print("<span>Subject:</span>");
-					out.print("<i>" + plan.getString("project.Subject") + "</i><br/>");
-					out.print("<hr/>");
-					out.print("<span>Team name:</span>");
-					out.print("<i>" + plan.getString("team.Name") + "</i><br/>");
-					out.print("<hr/>");
-					out.print("<span>Project name:</span>");
-					out.print("<i>" + plan.getString("project.Name") + "</i><br/>");
-					out.print("<hr/>");
-					out.print("<span>Academic year:</span>");
-					out.print("<i>" + plan.getString("project.acad_year") + "</i><br/>");
-					out.print("<hr/>");
-					out.print("<span>Description:</span>");
-					out.print("<i>" + plan.getString("project.Description") + "</i>");
-					out.print("</li>");
-					out.print("</ol>");
-					out.print("</fieldset>");
+					out.println("<fieldset>");
+					out.println("<legend>Project details:</legend>");
+					out.println("<ol>");
+					out.println("<li>");
+					out.println("<span>Subject:</span>");
+					out.println("<i>" + plan.getString("project.Subject") + "</i><br/>");
+					out.println("<hr/>");
+					out.println("<span>Team name:</span>");
+					out.println("<i>" + plan.getString("team.Name") + "</i><br/>");
+					out.println("<hr/>");
+					out.println("<span>Project name:</span>");
+					out.println("<i>" + plan.getString("project.Name") + "</i><br/>");
+					out.println("<hr/>");
+					out.println("<span>Academic year:</span>");
+					out.println("<i>" + plan.getString("project.acad_year") + "</i><br/>");
+					out.println("<hr/>");
+					out.println("<span>Description:</span>");
+					out.println("<i>" + plan.getString("project.Description") + "</i>");
+					out.println("</li>");
+					out.println("</ol>");
+					out.println("</fieldset>");
 							
-					plan = database.Quer("select users.name, users.surname, responsibility.name from users, users_team, team, project, responsibility where users_team.Team_idTeam=team.idTeam and users_team.Users_idUsers=users.idUsers and users_team.responsibility_idResponsibility=responsibility.idresponsibility and team.idTeam=project.Team_idTeam and team.name='" + plan.getString("team.Name") + "' and project.name='" + plan.getString("project.Name") + "';");
-					out.print("<fieldset>");
-					out.print("<legend>Team members:</legend>");
-					out.print("<ol>");
-					out.print("<li>");
+					ResultSet planDetails = database.Quer("select users.name, users.surname, responsibility.name from users, users_team, team, project, responsibility where users_team.Team_idTeam=team.idTeam and users_team.Users_idUsers=users.idUsers and users_team.responsibility_idResponsibility=responsibility.idresponsibility and team.idTeam=project.Team_idTeam and team.name='" + plan.getString("team.Name") + "' and project.name='" + plan.getString("project.Name") + "';");
+					out.println("<fieldset>");
+					out.println("<legend>Team members:</legend>");
+					out.println("<ol>");
+					out.println("<li>");
 					
-					while(plan.next())
+					while(planDetails.next())
 					{
-						out.print("<span>" + plan.getString("responsibility.name") + ":</span>");
-						out.print("<i>" + plan.getString("users.name") + " " + plan.getString("users.surname") + "</i><br/>");
-						if(plan.next()) out.print("<hr/>");
-						plan.previous();
+						out.println("<span>" + planDetails.getString("responsibility.name") + ":</span>");
+						out.println("<i>" + planDetails.getString("users.name") + " " + planDetails.getString("users.surname") + "</i><br/>");
+						if(planDetails.next()) out.println("<hr/>");
+						planDetails.previous();
 					}
+					planDetails.close();
 
-					out.print("</li>");
-					out.print("</ol>");
-					out.print("</fieldset>");
+					out.println("</li>");
+					out.println("</ol>");
+					out.println("</fieldset>");
 							
-							
-					out.print("<fieldset>");
-					out.print("<legend>Project plan:</legend>");
-					out.print("<ol>");
-					out.print("<li>");
-					out.print("</li>");
-					out.print("</ol>");
-					out.print("</fieldset>");
+					out.println("<fieldset>");
+					out.println("<legend>Project plan:</legend>");
+					out.println("<ol>");
+					out.println("<li>");
+					
+					//ako je ulogiran project manager:
+					out.println("<a href='ProjectPlan.jsp'><i>Create new Project Plan</i></a>");
+					//
+					
+					
+					out.println("</li>");
+					out.println("</ol>");
+					out.println("</fieldset>");
 
-							
-					out.print("</form>");
-					out.print("</body>");
-					out.print("</html>");
+					out.println("</form>");
+					out.println("</body>");
+					out.println("</html>");
 				}
 				//vise rezultata (advanced search)
 				else
 				{
-					//prikazi rezultate u petlji
+					out.println("<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'/>");
+					out.println("<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js'></script>");
+					out.println("<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>");
+					
+					out.println("<script type=\"text/javascript\">");
+					out.println("$(document).ready(function() {");
+					out.println("$(\"#tabs\").tabs();");
+					out.println("});");
+					out.println("</script>");
+					
+					out.println("</head>");
+					
+					out.println("<body style=\"font-size:62.5%;\">");
+					
+					out.println("<div id='tabs'>");
+
+					out.println("<ul>");
+					
+					plan.beforeFirst();
+					while(plan.next())
+					{
+						out.println("<li><a href='#" + plan.getString("project.name") + "'>" + plan.getString("project.name") + "</a></li>");
+					}
+					out.println("</ul>");
+					
+					plan.beforeFirst();
+					while(plan.next())
+					{
+					    out.println("<div id='" + plan.getString("project.Name") + "'>");
+					    
+					    out.println("<form id='form'>");
+						out.println("<fieldset>");
+						out.println("<legend>Project details:</legend>");
+						out.println("<ol>");
+						out.println("<li>");
+						out.println("<span>Subject:</span>");
+						out.println("<i>" + plan.getString("project.Subject") + "</i><br/>");
+						out.println("<hr/>");
+						out.println("<span>Team name:</span>");
+						out.println("<i>" + plan.getString("team.Name") + "</i><br/>");
+						out.println("<hr/>");
+						out.println("<span>Project name:</span>");
+						out.println("<i>" + plan.getString("project.Name") + "</i><br/>");
+						out.println("<hr/>");
+						out.println("<span>Academic year:</span>");
+						out.println("<i>" + plan.getString("project.acad_year") + "</i><br/>");
+						out.println("<hr/>");
+						out.println("<span>Description:</span>");
+						out.println("<i>" + plan.getString("project.Description") + "</i>");
+						out.println("</li>");
+						out.println("</ol>");
+						out.println("</fieldset>");
+						
+						ResultSet planDetails = database.Quer("select users.name, users.surname, responsibility.name from users, users_team, team, project, responsibility where users_team.Team_idTeam=team.idTeam and users_team.Users_idUsers=users.idUsers and users_team.responsibility_idResponsibility=responsibility.idresponsibility and team.idTeam=project.Team_idTeam and team.name='" + plan.getString("team.Name") + "' and project.name='" + plan.getString("project.Name") + "';");
+						out.println("<fieldset>");
+						out.println("<legend>Team members:</legend>");
+						out.println("<ol>");
+						out.println("<li>");
+						
+						while(planDetails.next())
+						{
+							out.println("<span>" + planDetails.getString("responsibility.name") + ":</span>");
+							out.println("<i>" + planDetails.getString("users.name") + " " + planDetails.getString("users.surname") + "</i><br/>");
+							if(planDetails.next()) out.println("<hr/>");
+							planDetails.previous();
+						}
+						planDetails.close();
+
+						out.println("</li>");
+						out.println("</ol>");
+						out.println("</fieldset>");
+								
+						out.println("<fieldset>");
+						out.println("<legend>Project plan:</legend>");
+						out.println("<ol>");
+						out.println("<li>");
+						
+						out.println("</li>");
+						out.println("</ol>");
+						out.println("</fieldset>");
+						
+						out.println("</form>");
+					    
+					    out.println("</div>");
+					}
+					
+					out.println("</div>");
+					
+					out.println("</body>");
+					out.println("</html>");
 				}
 			}
+			plan.close();
 		}
 		catch (Exception e){
 			e.printStackTrace();

@@ -44,4 +44,34 @@
     <servlet-name>PlanAndControlProjectAdvancedSearchServlet</servlet-name>
     <url-pattern>/PlanAndControlProjectAdvancedSearchServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>WeeklyAssignmentsSelectServlet</display-name>
+    <servlet-name>WeeklyAssignmentsSelectServlet</servlet-name>
+    <servlet-class>SPtool.WeeklyAssignmentsSelectServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WeeklyAssignmentsSelectServlet</servlet-name>
+    <url-pattern>/WeeklyAssignmentsSelectServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>WeeklyAssignmentsServlet</display-name>
+    <servlet-name>WeeklyAssignmentsServlet</servlet-name>
+    <servlet-class>SPtool.WeeklyAssignmentsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WeeklyAssignmentsServlet</servlet-name>
+    <url-pattern>/WeeklyAssignmentsServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>WeeklyAssignmentsFirstServlet</display-name>
+    <servlet-name>WeeklyAssignmentsFirstServlet</servlet-name>
+    <servlet-class>SPtool.WeeklyAssignmentsFirstServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WeeklyAssignmentsFirstServlet</servlet-name>
+    <url-pattern>/WeeklyAssignmentsFirstServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

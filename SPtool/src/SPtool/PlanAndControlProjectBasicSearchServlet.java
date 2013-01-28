@@ -18,52 +18,65 @@ public class PlanAndControlProjectBasicSearchServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		//ako je ulogiran student redirekcija na planandcontrolprojectservlet
 		try
 		{
 			PrintWriter out = response.getWriter();
 			
-			out.print("<!DOCTYPE html>");
-			out.print("<html><head>");
-			out.print("<link rel=\"stylesheet\" href=\"PlanAndControlProjectBasicSearch.css\" type=\"text/css\">");
-			out.print("<title>Plan and control project</title>");				
-			out.print("</head>");
-			out.print("<body>");
+			/*out.println("<!DOCTYPE html>");
+			out.println("<html><head>");
+			out.println("<link rel='stylesheet' href='style.css' type='text/css'>");
+			out.println("<title>Plan and control project</title>");				
+			out.println("</head>");
+			out.println("<body>");*/
 			
-			out.print("<form id=\"basicSearch\" method=\"get\" action=\"PlanAndControlProjectServlet\">");
+			out.println("<form id='form' method='get' action='PlanAndControlProjectServlet'>");
 			
-			out.print("<fieldset>");
-			out.print("<legend>Plan and control project</legend>");
-			out.print("<ol>");
+			out.println("<fieldset>");
+			out.println("<legend>Plan and control project</legend>");
+			out.println("<ol>");
 					
-			out.print("<li>");
-			out.print("<label for=\"projectBasicSearch\">Choose project</label>");
+			out.println("<li>");
+			out.println("<label for='projectBasicSearch'>Choose project</label>");
 			
-			out.print("<select id='projectBasicSearch' name='projectBasicSearch'>");
+			out.println("<select id='projectBasicSearch' name='projectBasicSearch'>");
 			
 			MySQLcon database = new MySQLcon("jdbc:mysql://localhost:3306/mydb", "root", "root");
 			ResultSet projects = database.Quer("select Project.Name, Team.Name, Project.acad_year from Project, Team where (Project.Team_idTeam=Team.idTeam) order by Project.Acad_year DESC, Project.Name ASC"/* and acad_year=(select max(acad_year) from project)*/);
 
 			while(projects.next())
 			{
-				out.print("<option value=\"" + projects.getString("Project.Name") + ";" + projects.getString("Team.Name") + "\">" + projects.getString("Project.Name") + " - " + projects.getString("Team.Name") +"</option>");
+				out.println("<option value='" + projects.getString("Project.Name") + ";" + projects.getString("Team.Name") + "'>" + projects.getString("Project.Name") + " - " + projects.getString("Team.Name") +"</option>");
 			}
 			projects.close();
-			out.print("</select>");
+			out.println("</select>");
 			
-			out.print("<small>&nbsp&nbsp&nbsp<a href=\"PlanAndControlProjectAdvancedSearchServlet\">Advanced Search</a></small>");
-			out.print("</li>");
+			out.println("<small>&nbsp&nbsp&nbsp<a href='PlanAndControlProjectAdvancedSearchServlet'>Advanced Search</a></small>");
+			out.println("</li>");
 						
-			out.print("</ol>");
-			out.print("</fieldset>");
+			out.println("</ol>");
+			out.println("</fieldset>");
 			
-			out.print("<fieldset>");
+			out.println("<fieldset>");
 			
-			out.print("<input type='submit' value='Submit'/>");
+			out.println("<input type='submit' value='Submit'/>");
 			
-			out.print("</fieldset>");
-			out.print("</form>");
-			out.print("</body>");
-			out.print("</html>");
+			out.println("</fieldset>");
+			out.println("</form>");
+			
+			out.println("<script type='text/javascript'>");
+			out.println("var form = document.getElementById('form');");
+			out.println("form.onsubmit = function(event) {");
+			out.println("if (form['projectBasicSearch'].value == '')");
+			out.println("{");
+			out.println("event.preventDefault();");
+			out.println("alert('One project must be selected')");
+			out.println("}");
+			out.println("};");
+	        out.println("</script>");
+			/*
+			out.println("</body>");
+			out.println("</html>");*/
 		}
 		catch (Exception e){
 			e.printStackTrace();
