@@ -33,7 +33,7 @@ public class WeeklyAssignmentsFirstServlet extends HttpServlet {
 		out.println("<ol><li>");
 		
 		out.println("<a href='WeeklyAssignmentsForm.jsp'>Create new weekly assignment</a><br/>");
-		out.println("<a href='WeeklyAssignmentsRate.jsp'>Rate completed weekly assignments</a>");
+		//out.println("<a href='WeeklyAssignmentsRate.jsp'>Rate completed weekly assignments</a>");
 		
 		out.println("</li></ol>");
 		out.println("</fieldset>");

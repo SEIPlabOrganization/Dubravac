@@ -1,0 +1,33 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	
+}
+#nav{
+	position: relative;
+	background: #5BD4FF;
+	text-align: center;
+	border-style: none;
+	width: 1000px;
+	height: 30px;
+	border-top-left-radius: 25px;
+	border-top-right-radius: 25px;
+	box-shadow: rgb(0,0,170) 2px 2px 4px inset;
+}
+#nav a{
+	margin: 0px 0px 0px 15px;
+	
+	padding-top: 10px;
+	font: bold 18px Tahoma;
+	text-decoration: none;}
+#nav a:link, a:visited{
+	color: blue;
+	vertical-align: middle;
+}
+#nav a:hover{
+	color: Yellow;
+	text-shadow: black -1px 0px;
+	vertical-align: middle;
+}
+
+

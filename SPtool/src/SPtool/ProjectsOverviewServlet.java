@@ -26,16 +26,16 @@ public class ProjectsOverviewServlet extends HttpServlet
 			MySQLcon database = new MySQLcon("jdbc:mysql://localhost:3306/mydb", "root", "root");
 			
 			
-			out.println("<!DOCTYPE html>");
+			/*out.println("<!DOCTYPE html>");
 			out.println("<html>");
-			out.println("<head>");
+			out.println("<head>");*/
 			//
-			out.println("<link rel='stylesheet' href='ProjectsOverview.css' />");
+			/*out.println("<link rel='stylesheet' href='ProjectsOverview.css' />");
 			out.println("<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'/>");
 			out.println("<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js'></script>");
 			out.println("<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>");
-			out.println("</head>");
-			out.println("<body style='font-size:62.5%;'>");
+			out.println("</head>");*/
+			/*out.println("<body style='font-size:62.5%;'>");*/
 			
 			
 			
@@ -215,8 +215,8 @@ public class ProjectsOverviewServlet extends HttpServlet
 				projects.close();
 			}
 			out.println("</div>");
-			out.println("</body>");
-			out.println("</html>");
+			/*out.println("</body>");
+			out.println("</html>");*/
 			acad_years.close();
 			
 			

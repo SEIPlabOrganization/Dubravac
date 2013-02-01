@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+#buttons:hover {
+	color:red;
+	cursor:pointer;
+}
+
+body {
+	margin-left: auto;
+	margin-right: auto;
+	width: 1000px;
+	text-align: left;
+}

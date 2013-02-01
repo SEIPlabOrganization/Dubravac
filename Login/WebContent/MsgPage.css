@@ -1,0 +1,54 @@
+*{
+	margin: 0px;
+	padding: 0px;	
+}
+body{
+	height: 100%;
+	text-align: center;
+	background: white;
+}
+html {
+	height: 100%;
+}
+table{
+	
+	height: 100%;
+	width: 100%;
+	max-width: 100%;
+	overflow: hidden;
+}
+td
+{
+	vertical-align: top;
+	text-align: left;
+}
+textarea {
+    resize: none;
+}
+}
+#des{
+	vertical-align: middle;
+}
+a{
+	margin: 0px 0px 0px 10px;
+	font: bold 20px Tahoma;
+	text-decoration: none;
+}
+a:link, a:visited{
+	font: bold 20px Tahoma;
+	color: Blue;
+}
+a:hover{
+	font: bold 20px Tahoma;
+	color: Yellow;
+}
+#tool_list{
+	width: 200px;
+	background: #5BD4FF;
+}
+
+
+#msg_app{
+	height: 100%;
+	width: 800px;
+}

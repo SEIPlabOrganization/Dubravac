@@ -7,7 +7,7 @@
 <title>Plan and control project</title>
 </head>
 <body>
-	<!--<jsp:include page="/SecTeamServlet" flush="false" />-->
+	<jsp:include page="/SecTeamServlet" flush="false" />
 	<jsp:include page="/PlanAndControlProjectBasicSearchServlet" />
 </body>
 </html>
