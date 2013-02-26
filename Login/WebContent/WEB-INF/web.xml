@@ -474,12 +474,7 @@
     <servlet-name>ProjectPlanProcessing</servlet-name>
     <url-pattern>/ProjectPlanProcessing</url-pattern>
   </servlet-mapping>
-  
-  
-  
-  
-  
-    <servlet>
+  <servlet>
     <description></description>
     <display-name>Survey</display-name>
     <servlet-name>Survey</servlet-name>
@@ -519,10 +514,24 @@
     <servlet-name>SurveyResults</servlet-name>
     <url-pattern>/SurveyResults</url-pattern>
   </servlet-mapping>
-  
-  
-  
-  
-  
-  
+  <servlet>
+    <description></description>
+    <display-name>WeeklyAssignmentsStudentFirstServlet</display-name>
+    <servlet-name>WeeklyAssignmentsStudentFirstServlet</servlet-name>
+    <servlet-class>project1.WeeklyAssignmentsStudentFirstServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WeeklyAssignmentsStudentFirstServlet</servlet-name>
+    <url-pattern>/WeeklyAssignmentsStudentFirstServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>WeeklyAssignmentsStudentServlet</display-name>
+    <servlet-name>WeeklyAssignmentsStudentServlet</servlet-name>
+    <servlet-class>project1.WeeklyAssignmentsStudentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WeeklyAssignmentsStudentServlet</servlet-name>
+    <url-pattern>/WeeklyAssignmentsStudentServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

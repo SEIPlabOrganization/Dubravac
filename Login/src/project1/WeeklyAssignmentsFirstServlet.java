@@ -16,11 +16,9 @@ public class WeeklyAssignmentsFirstServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//saznat tko je ulogiran
-		//ako je ulogiran obican student skociti na stranicu
-		//response.sendRedirect("/SPtool/WeeklyAssignmentsStudentServlet");
 		
-		//ako je ulogiran team leader
+		//stranica za team leadera
+		
 		PrintWriter out = response.getWriter();
 		out.println("<!DOCTYPE html>");
 		out.println("<html><head>");
@@ -33,7 +31,7 @@ public class WeeklyAssignmentsFirstServlet extends HttpServlet {
 		out.println("<ol><li>");
 		
 		out.println("<a href='WeeklyAssignmentsForm.jsp'>Create new weekly assignment</a><br/>");
-		//out.println("<a href='WeeklyAssignmentsRate.jsp'>Rate completed weekly assignments</a>");
+		out.println("<a href='WeeklyAssignmentsRate.jsp'>Rate completed weekly assignments</a>");
 		
 		out.println("</li></ol>");
 		out.println("</fieldset>");

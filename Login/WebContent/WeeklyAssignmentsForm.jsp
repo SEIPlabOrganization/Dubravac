@@ -5,14 +5,31 @@
 	<head>
 		<link rel='stylesheet' href='style.css' type='text/css'>
 		<title>Weekly Assignments</title>
-		<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js' type='text/javascript'></script>
-		<script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js' type='text/javascript'></script>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+		<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+		<link rel="stylesheet" href="/resources/demos/style.css" />
 		<script type='text/javascript'>
 			$(function()
 			{
 				$('#date_picker').datepicker();
 			});
 		</script>
+		
+		<script type='text/javascript'>
+		function validacija(d)
+		{
+			if(d.value.length == 0)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+        </script>
+        
 	</head>
 	<body>
 	<jsp:include page="/SecTeamServlet" flush="false" />
@@ -24,16 +41,37 @@
 						<tr>
 							<td>Assignment for:</td>
 							<td>
-							<jsp:include page="/WeeklyAssignmentsSelectServlet" />
+								<jsp:include page="/WeeklyAssignmentsSelectServlet" />
 							</td>
 						</tr>
 						<tr>
 							<td>Name:</td>
-							<td><input type='text' name='name' placeholder='Enter weekly assignment name...'></td>
+							<td><input type='text' name='name' placeholder='Enter weekly assignment name...'
+							onchange='if (!validacija(this))
+							{
+								document.getElementById("m_name").innerHTML="* (required)";
+							}
+							else
+							{
+								document.getElementById("m_name").innerHTML="";
+							}'
+							/>
+							<i style='color:red;' id='m_name'></i>
+							</td>
 						</tr>
 						<tr>
 							<td>Description:</td>
-							<td><textarea rows='5' cols='60' name='description' placeholder='Describe weekly assignment...'></textarea></td>
+							<td><textarea rows='5' cols='60' name='description' placeholder='Describe weekly assignment...'
+							onchange='if (!validacija(this))
+							{
+								document.getElementById("m_description").innerHTML="* (required)";
+							}
+							else
+							{
+								document.getElementById("m_description").innerHTML="";
+							}'></textarea>
+							<i style='color:red;' id='m_description'></i>
+							</td>
 						</tr>
 						<tr>
 							<td rowspan='2'>Difficulty:</td>
@@ -53,7 +91,14 @@
 						<tr>
 							<td>Week number:</td>
 							<td>
-								<select name='week'>
+								<select name='week' onchange='if (!validacija(this))
+							{
+								document.getElementById("m_week").innerHTML="* (required)";
+							}
+							else
+							{
+								document.getElementById("m_week").innerHTML="";
+							}'>
 									<option value='' selected='selected'></option>
 									<option value='1'>1</option>
 									<option value='2'>2</option>
@@ -76,11 +121,21 @@
 									<option value='17'>19</option>
 									<option value='18'>20</option>
 								</select>
+								<i style='color:red;' id='m_week'></i>
 							</td>
 						</tr>
 						<tr>
 							<td>Deadline:</td>
-							<td><input type='text' id='date_picker' name='deadline'></td>
+							<td><input type='text' id='date_picker' name='deadline' onchange='if (!validacija(this))
+							{
+								document.getElementById("m_deadline").innerHTML="* (required)";
+							}
+							else
+							{
+								document.getElementById("m_deadline").innerHTML="";
+							}'>
+							<i style='color:red;' id='m_deadline'></i>
+							</td>
 						</tr>
 						<tr>
 							<td>Product format:</td>
@@ -103,7 +158,7 @@
 		<script type='text/javascript'>
         var form = document.getElementById('form');
         form.onsubmit = function(event) {
-				if (form['nameSurname'].value == '' | form['week'].value == '' | form['deadline'].value == '' | form['description'].value == '')  
+				if (form['nameSurname'].value == '' | form['week'].value == '' | form['deadline'].value == '' | form['description'].value == '' | form['name'].value == '')  
 				{  
 					alert('All fields must be filled');
 					event.preventDefault();

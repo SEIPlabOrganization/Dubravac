@@ -20,6 +20,9 @@
     function PlanAndControlProject() {
    		document.getElementById("des").innerHTML="Project details, project plan form";
    	}
+    function WeeklyAssignments() {
+   		document.getElementById("des").innerHTML="Weekly Assignments";
+   	}
     function Survey() {
    		document.getElementById("des").innerHTML="Surveys for students, professors";
    	}
@@ -40,6 +43,7 @@
 						<td>
 							<a href="ProjectsOverview.jsp" target="tools" onmouseover="ProjectsOverview()" onmouseout="Def()">Projects Overview</a><br/><br/>
 							<a href="PlanAndControlProjectStudent.jsp" target="tools" onmouseover="PlanAndControlProject()" onmouseout="Def()">Plan Project</a><br/><br/>
+							<a href="WeeklyAssignmentsStudent.jsp" target="tools" onmouseover="WeeklyAssignments()" onmouseout="Def()">Weekly Assignments</a><br/><br/>
 							<a href="survey_index.jsp" target="tools" onmouseover="Survey()" onmouseout="Def()">Survey</a><br/><br/>
 							<a href="NewProjectAssignments.jsp" target="tools" onmouseover="NewProjectAssignments()" onmouseout="Def()">Create new assignment</a><br/><br/>
 							<a href="ProjectAssignmentOverview.jsp" target="tools" onmouseover="ProjectAssignmentOverview()" onmouseout="Def()">View assignments</a>
