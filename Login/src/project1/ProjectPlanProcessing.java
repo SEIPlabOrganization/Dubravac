@@ -1,3 +1,9 @@
+/*
+ * 
+ * Servlet koji je namijenjen obradi informacija unesenih preko projekt plan forme te unosu u bazu
+ * 
+ * */
+
 package project1;
 
 import java.io.IOException;

@@ -1,3 +1,9 @@
+/*
+ * 
+ * Servlet koji sluzi za omogucavanje profesoru/asistentu osnovno pretrazivanje. Profesor odabere kombinaciju team-projekt i te informacije mu se prikazu pomocu PlanAndControlBasicSearchServlet
+ * 
+ * */
+
 package project1;
 
 import java.io.IOException;
@@ -22,23 +28,7 @@ public class PlanAndControlProjectBasicSearchServlet extends HttpServlet {
 		{
 			PrintWriter out = response.getWriter();
 			MySQLcon database = new MySQLcon();
-			/*HttpSession session = request.getSession(true);
-			String userid = (String) session.getAttribute("userid");
-			ResultSet user = database.Quer("select Role from Users where Users.idUsers='" + userid + "'");
-			user.first();
-			String role = user.getString(1);
-			if (role.compareTo("Stud") == 0)
-			{
-				response.sendRedirect("/Login/PlanAndControlProjectServlet");
-			}*/
-			
-			/*out.println("<!DOCTYPE html>");
-			out.println("<html><head>");
-			out.println("<link rel='stylesheet' href='style.css' type='text/css'>");
-			out.println("<title>Plan and control project</title>");				
-			out.println("</head>");
-			out.println("<body>");*/
-			
+
 			out.println("<form id='form' method='get' action='PlanAndControlProjectServlet'>");
 			
 			out.println("<fieldset>");
@@ -50,9 +40,11 @@ public class PlanAndControlProjectBasicSearchServlet extends HttpServlet {
 			
 			out.println("<select id='projectBasicSearch' name='projectBasicSearch'>");
 			
-			
+			// prikaz svih projekata i timova
+			// radi preglednosti se moze odkomentirat dio koda u resultsetu ispod, tako da profesor u osnovnom pretrazivanju vidi samo kombinacije team-projekt za tekucu godinu
 			ResultSet projects = database.Quer("select Project.Name, Team.Name, Project.acad_year from Project, Team where (Project.Team_idTeam=Team.idTeam) order by Project.Acad_year DESC, Project.Name ASC"/* and acad_year=(select max(acad_year) from project)*/);
 
+			// prikaz svih timova s pripadnim projektima u padajucem izborniku
 			while(projects.next())
 			{
 				out.println("<option value='" + projects.getString("Project.Name") + ";" + projects.getString("Team.Name") + "'>" + projects.getString("Project.Name") + " - " + projects.getString("Team.Name") +"</option>");
@@ -73,6 +65,7 @@ public class PlanAndControlProjectBasicSearchServlet extends HttpServlet {
 			out.println("</fieldset>");
 			out.println("</form>");
 			
+			// onemoguci submit s praznim svim poljima
 			out.println("<script type='text/javascript'>");
 			out.println("var form = document.getElementById('form');");
 			out.println("form.onsubmit = function(event) {");

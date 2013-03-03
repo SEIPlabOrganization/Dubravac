@@ -31,15 +31,15 @@ textarea {
 }
 a{
 	margin: 0px 0px 0px 10px;
-	font: bold 20px Tahoma;
+	font: bold 17px Tahoma;
 	text-decoration: none;
 }
 a:link, a:visited{
-	font: bold 20px Tahoma;
+	font: bold 17px Tahoma;
 	color: Blue;
 }
 a:hover{
-	font: bold 20px Tahoma;
+	font: bold 17px Tahoma;
 	color: Yellow;
 }
 #tool_list{

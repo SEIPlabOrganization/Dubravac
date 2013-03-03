@@ -1,3 +1,9 @@
+/*
+ * 
+ * Servlet koji je iskljucivo za project managera te sluzi za ispis poruke ukoliko je tjedni zadatak uspjesno zadan i opcije za kreiranje i ocjenjivanje tjednog zadatka
+ * 
+ * */
+
 package project1;
 
 import java.io.IOException;
@@ -30,8 +36,9 @@ public class WeeklyAssignmentsFirstServlet extends HttpServlet {
 		out.println("<fieldset>");
 		out.println("<ol><li>");
 		
+		// opcije
 		out.println("<a href='WeeklyAssignmentsForm.jsp'>Create new weekly assignment</a><br/>");
-		out.println("<a href='WeeklyAssignmentsRate.jsp'>Rate completed weekly assignments</a>");
+		/*out.println("<a href='WeeklyAssignmentsRate.jsp'>Rate completed weekly assignments</a>");*/
 		
 		out.println("</li></ol>");
 		out.println("</fieldset>");

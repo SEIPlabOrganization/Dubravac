@@ -1,3 +1,6 @@
+
+<!-- osnovna html forma za kreiranje tjednih zadataka -->
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -8,8 +11,10 @@
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
 		<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
-		<link rel="stylesheet" href="/resources/demos/style.css" />
 		<script type='text/javascript'>
+		
+		// inicijalizacija jquery datepickera
+		
 			$(function()
 			{
 				$('#date_picker').datepicker();
@@ -17,6 +22,8 @@
 		</script>
 		
 		<script type='text/javascript'>
+		//funkcija za validaciju obrasca na nacin da ne dopusta prazna polja
+
 		function validacija(d)
 		{
 			if(d.value.length == 0)
@@ -37,7 +44,7 @@
 			<fieldset>
 				<legend>Weekly Assignments</legend>
 				<ol><li>
-					<table border='0'>
+					<table>
 						<tr>
 							<td>Assignment for:</td>
 							<td>
@@ -156,6 +163,8 @@
 		</form>
 		
 		<script type='text/javascript'>
+		
+		// javascript funkcija za ispitivanje jesu li sva polja ispunjena
         var form = document.getElementById('form');
         form.onsubmit = function(event) {
 				if (form['nameSurname'].value == '' | form['week'].value == '' | form['deadline'].value == '' | form['description'].value == '' | form['name'].value == '')  

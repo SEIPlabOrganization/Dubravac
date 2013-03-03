@@ -1,3 +1,11 @@
+/*
+ * 
+ * Servlet koji uzima podatke o tome tko je ulogiran. Ako je ulogiran student, prikazuje podatke o timu u kojem se nalazi, projektu na kojem radi, te podacima o svim clanovima tima te njihovim zaduzenjima.
+ * Ako je ulogirani student ujedno project manager, tada mu se omogucava pisanje projektnog plana.
+ * Ako je ulogiran profesor/asistent tada mu se omoguci osnovno i napredno pretrazivanje po timovima i u ovisnosti o odabranim parametrima pretrazivanja ispisuje trazene podatke
+ * 
+ * */
+
 package project1;
 
 import java.io.IOException;
@@ -24,42 +32,49 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			MySQLcon database = new MySQLcon("jdbc:mysql://localhost:3306/mydb", "root", "root");
 			ResultSet plan;
-			//provjeri je li ulogiran student ili profesor i spremi zaduzenje i 
-			//ako je ulogiran student cini slijedece:
 			
+			// uzima podatke iz sesije o trenutno ulogiranom korisniku i timu kojem pripada
 			HttpSession session = request.getSession(true);
 			String userid = (String) session.getAttribute("userid");
 			String teamid = (String) session.getAttribute("teamid");
+			
+			// uzmi podatak iz baze koje je zaduzenje trenutno ulogiranog korisnika
 			ResultSet user = database.Quer("select Role from Users where Users.idUsers='" + userid + "'");
 			user.first();
 			String role = (String)user.getString(1);
+			
+			// ako je ulogiran student napravi upit prema bazi u vezi podataka o njegovom timu
 			if (role.compareTo("Stud") == 0)
 			{
 				plan = database.Quer("select team.Name, project.Subject, project.acad_year, project.name, project.description from project,team where project.Team_idTeam=team.idTeam and team.idTeam='" + teamid + "';");
 			}
 			
-			//inace (ako je ulogiran profesor):
+			// ako je ulogiran profesor/asistent
 			else
 			{
 			if (request.getParameter("projectBasicSearch") != null)
 			{
 			    // basic search
 				
+				// odvoji string u kojem su skupa team i projekt u 2 odvojena stringa
 				String project=request.getParameter("projectBasicSearch");
 				String team;
 				byte index = (byte)project.indexOf(";");
 				team = project.substring(index+1);
 				project = project.substring(0, index);
 				
+				// izvrsi upit prema bazi za podatke odabranog para tim-projekt
 				plan = database.Quer("select team.Name, project.Subject, project.acad_year, project.name, project.description from project,team where project.Team_idTeam=team.idTeam and project.name='"+project+"' and team.name='"+team+"';");
 			}
 			else
 			{
 				// advanced search
-
+				
+				// uzmi sve podatke koji su odabrani u formi "advanced search"
 				String[] projectResults;
 				String query = "select distinct team.Name, project.Subject, project.acad_year, project.name, project.description from project, team ";
 				
+				// ako je odabran jedan ili vise studenata ili project managera, dodaj na kraj stringa te tablice
 				if (request.getParameterValues("student") != null || request.getParameterValues("projectManager") != null)
 				{
 					query = query + ", responsibility, users, users_team ";
@@ -72,6 +87,7 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 					query = query + "responsibility.idResponsibility=users_team.Responsibility_idResponsibility and users.idusers=users_team.users_idusers and users_team.team_idteam=team.idteam) and (";
 				}
 				
+				// ako je odabrano ime projekta dodaj u upit i sva imena projekata
 				if (request.getParameterValues("projectName") != null)
 				{
 					projectResults = request.getParameterValues("projectName");
@@ -80,6 +96,8 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 				        query = query + "project.name='" + projectResults[i] + "' or ";
 				    }
 				}
+				
+				// ako je odabrano ime tima dodaj u upit i sva imena tima
 				if (request.getParameterValues("teamName") != null)
 				{
 					projectResults = request.getParameterValues("teamName");
@@ -88,6 +106,8 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 				        query = query + "team.name='" + projectResults[i] + "' or ";
 				    }
 				}
+				
+				// ako je odabrana akademska godina dodaj ju u upit prema bazi
 				if (request.getParameterValues("academicYear") != null)
 				{
 					projectResults = request.getParameterValues("academicYear");
@@ -96,6 +116,8 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 				        query = query + "project.acad_year='" + projectResults[i] + "' or ";
 				    }
 				}
+				
+				// odvoji ime i prezime projektnih managera i dodaj ih kao uvjet u upit
 				if (request.getParameterValues("projectManager") != null)
 				{
 					projectResults = request.getParameterValues("projectManager");
@@ -110,6 +132,8 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 						query = query + "(users.name='" + name + "' and users.surname='" + surname + "' and responsibility.idResponsibility=1) or ";
 				    }
 				}
+				
+				// odvoji ime i prezime studenata i dodaj ih kao uvjet u upit
 				if (request.getParameterValues("student") != null)
 				{
 					projectResults = request.getParameterValues("student");
@@ -133,9 +157,9 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 			//ako je resultset prazan
 			if (!plan.next())
 			{
-				//ulogiran student
-				//redirekcija na pocetnu stranicu
-				//response.sendRedirect("/SPtool/pocetna stranica");
+				// ne moze biti ulogiran profesor/asistent
+				// redirekcija na pocetnu stranicu
+				// response.sendRedirect("/SPtool/pocetna stranica");
 			}
 			//ako resultset nije prazan
 			else
@@ -150,6 +174,7 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 				out.println("<link rel='stylesheet' href='style.css' type='text/css'/>");
 				out.println("<title>Plan and control project</title>");
 				
+				// ako je jedan zapis u rezultatu upita prema bazi ispisi samo te elemente
 				if (count == 1)
 				{
 					plan.first();
@@ -180,13 +205,15 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 					out.println("</li>");
 					out.println("</ol>");
 					out.println("</fieldset>");
-							
+					
+					// uzmi iz baze podatke o studentima u timu i pripadnim zaduzenjima
 					ResultSet planDetails = database.Quer("select users.name, users.surname, responsibility.name from users, users_team, team, project, responsibility where users_team.Team_idTeam=team.idTeam and users_team.Users_idUsers=users.idUsers and users_team.responsibility_idResponsibility=responsibility.idresponsibility and team.idTeam=project.Team_idTeam and team.name='" + plan.getString("team.Name") + "' and project.name='" + plan.getString("project.Name") + "';");
 					out.println("<fieldset>");
 					out.println("<legend>Team members:</legend>");
 					out.println("<ol>");
 					out.println("<li>");
 					
+					// ispisi sve studente s pripadnim zaduzenjima
 					while(planDetails.next())
 					{
 						out.println("<span>" + planDetails.getString("responsibility.name") + ":</span>");
@@ -195,7 +222,7 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 						planDetails.previous();
 					}
 					planDetails.close();
-
+					
 					out.println("</li>");
 					out.println("</ol>");
 					out.println("</fieldset>");
@@ -205,17 +232,19 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 					out.println("<ol>");
 					out.println("<li>");
 					
+					// ako je ulogiran project manager prikazi mogucnost kreiranja projektnog plana
 					ResultSet provjera = database.Quer("select Users_team.Responsibility_idResponsibility from Users_team where Users_team.Team_idTeam=" + teamid + " and Users_team.Users_idUsers='" + userid + "'");
 					provjera.first();
 					if (provjera.getString(1).compareTo("1") == 0)
 					{
 						out.println("<a href='ProjectPlan.jsp'><i>Create new Project Plan</i></a>");
 					}
+					// ako je ulogiran netko tko nije projekni manager prikazi poruku
+					// bilo bi dobro omogucit prikaz svih kreiranih verzija projektnog plana
 					else
 					{
 						out.println("Project plan doesn't exist in database yet");
 					}
-					
 					
 					out.println("</li>");
 					out.println("</ol>");
@@ -241,6 +270,7 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 					out.println("<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js'></script>");
 					out.println("<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>");
 					
+					// prikaz tabova iz jquery
 					out.println("<script type=\"text/javascript\">");
 					out.println("$(document).ready(function() {");
 					out.println("$(\"#tabs\").tabs();");
@@ -256,6 +286,8 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 					out.println("<ul>");
 					
 					plan.beforeFirst();
+					
+					// odvajanje po imenima projekata
 					while(plan.next())
 					{
 						out.println("<li><a href='#" + plan.getString("project.name") + "'>" + plan.getString("project.name") + "</a></li>");
@@ -263,6 +295,8 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 					out.println("</ul>");
 					
 					plan.beforeFirst();
+					
+					// ispis svih podataka za svaki result iz plan
 					while(plan.next())
 					{
 					    out.println("<div id='" + plan.getString("project.Name") + "'>");
@@ -296,6 +330,7 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 						out.println("<ol>");
 						out.println("<li>");
 						
+						// ispis svih zaduzenja svakog studenta i njihovo ime i prezime
 						while(planDetails.next())
 						{
 							out.println("<span>" + planDetails.getString("responsibility.name") + ":</span>");
@@ -313,9 +348,10 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 						out.println("<legend>Project plan:</legend>");
 						out.println("<ol>");
 						out.println("<li>");
-						//
+						
+						// promijeniti nakon sto budu postojale verzije projektnog plana
 						out.println("Project plan doesn't exist in database yet");
-						//
+						
 						out.println("</li>");
 						out.println("</ol>");
 						out.println("</fieldset>");

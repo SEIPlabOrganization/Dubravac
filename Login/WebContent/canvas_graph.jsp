@@ -1,3 +1,6 @@
+
+<!-- jsp koji sluzi za iscrtavanje grafova pomocu canvas elementa -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,9 +10,6 @@
     <body>
 	    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.min.js"></script>
         <script type="text/javascript">
-        //document.write(parent.idp);
-        //var id;
-        //document.write(id);
 		
 		// Returns the max Y value in our data list
             function getMaxY() {

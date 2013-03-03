@@ -534,4 +534,14 @@
     <servlet-name>WeeklyAssignmentsStudentServlet</servlet-name>
     <url-pattern>/WeeklyAssignmentsStudentServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>WeeklyAssignmentsStudentProcessingServlet</display-name>
+    <servlet-name>WeeklyAssignmentsStudentProcessingServlet</servlet-name>
+    <servlet-class>project1.WeeklyAssignmentsStudentProcessingServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WeeklyAssignmentsStudentProcessingServlet</servlet-name>
+    <url-pattern>/WeeklyAssignmentsStudentProcessingServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

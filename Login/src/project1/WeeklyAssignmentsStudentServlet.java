@@ -1,3 +1,9 @@
+/*
+ * 
+ * Servlet koji pruza mogucnost studentu da oznaci tjedni zadatak kao rijesen, te upload datoteke ukoliko je zadatak tipa "document"
+ * 
+ * */
+
 package project1;
 
 import java.io.IOException;
@@ -23,16 +29,42 @@ public class WeeklyAssignmentsStudentServlet extends HttpServlet {
 			int idWeeklyAssignments = Integer.parseInt(request.getParameter("id"));
 			
 			MySQLcon database = new MySQLcon();
+			
+			// upit prema bazi za product format odabranog tjednog zadatka
 			ResultSet rs = database.Quer("select productFormat from WeeklyAssignments where idWeeklyAssignments=" + idWeeklyAssignments);
 			rs.first();
 			
+			out.println("<!DOCTYPE html>");
+			out.println("<html><head>");
+			out.println("<link rel='stylesheet' href='style.css' type='text/css'>");
+			out.println("<title>Weekly Assignments</title>");
+			
+			out.println("</head>");
+			out.println("<body>");
+			out.println("<form id='form' name='form1'>");
+			out.println("<fieldset>");
+			out.println("<ol><li>");			
+			
+			// ako je product format = research
 			if(rs.getString(1).equals("research"))
 			{
+				out.println("<a href='WeeklyAssignmentsStudentProcessingServlet?id=" + idWeeklyAssignments + "'>Mark as completed</a><br/>");
+				out.println("<a href='javascript:javascript:history.go(-1)'>Back</a>");
 			}
+			// ako je product format = document
 			else
 			{
-				
+				// tu bi jos trebalo ubaciti upload field
+				out.println("<a href='WeeklyAssignmentsStudentProcessingServlet?id=" + idWeeklyAssignments + "'>Mark as completed</a><br/>");
+				out.println("<a href='javascript:javascript:history.go(-1)'>Back</a>");
 			}
+			
+			out.println("</li></ol>");
+			out.println("</fieldset>");
+			out.println("</form>");
+	
+			out.println("</body>");
+			out.println("</html>");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

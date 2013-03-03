@@ -1,3 +1,9 @@
+/*
+ * 
+ * Servlet koji sluzi za ispis svih zadanih tjednih zadataka trenutno ulogiranom studentu, te omogucava oznacavanje zadataka kao rijesenih.
+ * 
+ * */
+
 package project1;
 
 import java.io.IOException;
@@ -10,9 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class WeeklyAssignmentsStudentFirstServlet
- */
 public class WeeklyAssignmentsStudentFirstServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
@@ -48,26 +51,45 @@ public class WeeklyAssignmentsStudentFirstServlet extends HttpServlet
 			
 			// upit prema bazi za sve tjedne zadatke trenutno ulogiranog studenta
 			ResultSet rs = database.Quer("select * from WeeklyAssignments where status=1 and Users_team_idUsers_team=(select idUsers_team from Users_team where Team_idTeam='" + teamid + "' and Users_idUsers='" + userid + "')");
-			
-			// ispis svih podataka vezanih uz pojedini tjedni zadatak
-			while (rs.next())
+
+			if(rs.next())
 			{
-				out.println("<font size='3' color=black> <a href='WeeklyAssignmentsStudentServlet?id=" + rs.getString("idWeeklyAssignments") + "'>" + rs.getString("name") + "</a></font><br/>");
-				out.println("<font size='2'>Description: " + rs.getString("description") + " | ");
-				out.println("Difficulty: " + rs.getString("difficulty") + " | ");
-				out.println("Deadline: " + rs.getString("deadline") + " | ");
-				out.println("Product format: " + rs.getString("productFormat") + "</font>");
-				if (rs.next())
+				rs.beforeFirst();
+				// ispis svih podataka vezanih uz pojedini tjedni zadatak
+				while (rs.next())
 				{
-					out.println("<br/><br/>");
-					rs.previous();
+					out.println("<font size='3' color=black> <a href='WeeklyAssignmentsStudentServlet?id=" + rs.getString("idWeeklyAssignments") + "'>" + rs.getString("name") + "</a></font><br/>");
+					out.println("<font size='2'>Description: " + rs.getString("description") + " | ");
+					out.println("Difficulty: " + rs.getString("difficulty") + " | ");
+					out.println("Deadline: " + rs.getString("deadline") + " | ");
+					out.println("Product format: " + rs.getString("productFormat") + "</font>");
+					if (rs.next())
+					{
+						out.println("<br/><br/>");
+						rs.previous();
+					}
 				}
+			}
+			else
+			{
+				out.println("You don't have any weekly assignment!");
 			}
 			
 			out.println("</li></ol>");
 			out.println("</fieldset>");
 			out.println("</form>");
 	
+			if (request.getParameter("message") != null)
+			{
+				// javascript funkcija koja ispisuje poruku ako su uspjesno rijeseni
+				if ((request.getParameter("message")).compareTo("success") == 0)
+				{
+					out.println("<script type='text/javascript'>");
+					out.println("alert('You have successfully mark weekly assignment as completed');");
+					out.println("</script>");
+				}
+			}
+			
 			out.println("</body>");
 			out.println("</html>");
 			

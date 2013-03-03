@@ -1,3 +1,10 @@
+/*
+ * 
+ * Servlet koji profesoru/asistentu omogucava napredno pretrazivanje studenata po timovima koji rade na projektima.
+ * Omogucava filtriranje pretrazivanja po imenima projekata, imenima timova, akademskim godinama, imenima studenata i project managera.
+ * 
+ * */
+
 package project1;
 
 import java.io.IOException;
@@ -38,6 +45,7 @@ public class PlanAndControlProjectAdvancedSearchServlet extends HttpServlet {
 								out.println("<label>Project name</label>");
 								out.println("<select name='projectName' multiple>");
 								
+								// ispis svih imena projekata iz baze u padajucem izborniku
 								projects = database.Quer("select project.name, project.acad_year from project, team where (project.Team_idTeam=team.idTeam) order by project.acad_year DESC, project.name ASC;");
 								while(projects.next())
 								{
@@ -53,6 +61,7 @@ public class PlanAndControlProjectAdvancedSearchServlet extends HttpServlet {
 								out.println("<label>Team name</label>");
 								out.println("<select name='teamName' multiple>");
 								
+								// ispis svih imena timova iz baze
 								projects = database.Quer("select Team.Name, Project.acad_year from Project, Team where (Project.Team_idTeam=Team.idTeam) order by Project.Acad_year DESC, Team.Name ASC;");
 								while(projects.next())
 								{
@@ -68,6 +77,7 @@ public class PlanAndControlProjectAdvancedSearchServlet extends HttpServlet {
 								out.println("<label>Academic year</label>");
 								out.println("<select name='academicYear' multiple>");
 								
+								// ispis svih akademskih godina iz baze
 								projects = database.Quer("select distinct acad_year from project order by acad_year DESC");
 								while(projects.next())
 								{
@@ -83,6 +93,7 @@ public class PlanAndControlProjectAdvancedSearchServlet extends HttpServlet {
 								out.println("<label>Project Manager</label>");
 								out.println("<select name='projectManager' multiple>");
 								
+								// ispis svih imena project managera iz baze
 								projects = database.Quer("select distinct users.name, users.surname from users, users_team, responsibility where (users.idusers=users_team.users_idusers) and (responsibility.idresponsibility=users_team.responsibility_idresponsibility) and responsibility.idResponsibility=1 order by users.surname ASC;");
 								while(projects.next())
 								{
@@ -97,7 +108,8 @@ public class PlanAndControlProjectAdvancedSearchServlet extends HttpServlet {
 							out.println("<li>");
 								out.println("<label>Student</label>");
 								out.println("<select name='student' multiple>");
-
+								
+								// ispis svih imena studenata iz baze
 								projects = database.Quer("select distinct users.name, users.surname from users, users_team, responsibility where (users.idusers=users_team.users_idusers) and (responsibility.idresponsibility=users_team.responsibility_idresponsibility) order by users.surname ASC;");
 								while(projects.next())
 								{
@@ -111,13 +123,12 @@ public class PlanAndControlProjectAdvancedSearchServlet extends HttpServlet {
 					out.println("</fieldset>");
 					
 					out.println("<fieldset>");
-					//out.println("<span>");
 						out.println("<input type='reset' value='Reset'/>");
-						//out.println("</span>");
 						out.println("<input type='submit' value='Submit'/>");
 					out.println("</fieldset>");
 				out.println("</form>");
 				
+				// javascript funkcija koja ne dopusta slanje prazne forme
 				out.println("<script type='text/javascript'>");
 				out.println("var form = document.getElementById('form');");
 				out.println("form.onsubmit = function(event) {");
