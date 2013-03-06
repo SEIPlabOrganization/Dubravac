@@ -47,6 +47,7 @@ public class PlanAndControlProjectAdvancedSearchServlet extends HttpServlet {
 								
 								// ispis svih imena projekata iz baze u padajucem izborniku
 								projects = database.Quer("select project.name, project.acad_year from project, team where (project.Team_idTeam=team.idTeam) order by project.acad_year DESC, project.name ASC;");
+								
 								while(projects.next())
 								{
 									out.println("<option value='" + projects.getString("Project.Name") + "'>" + projects.getString("Project.Name") + "</option>");
@@ -99,7 +100,6 @@ public class PlanAndControlProjectAdvancedSearchServlet extends HttpServlet {
 								{
 									out.println("<option value='" + projects.getString("users.name") + ";" + projects.getString("users.surname") + "'>" + projects.getString("users.name") + " " + projects.getString("users.surname") + "</option>");
 								}
-								projects.close();
 
 								out.println("</select>");
 							out.println("</li>");

@@ -25,27 +25,26 @@ public class SurveyResults extends HttpServlet {
      */
     public SurveyResults() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html");
-		PrintWriter pw = response.getWriter();
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { //Request - response method -> GET method.
+		response.setContentType("text/html"); //response to the client is sent by text
+		PrintWriter pw = response.getWriter(); 
 		Connection con;
-		Statement stmt;
+		Statement stmt; //initialization of statements.
 		Statement stmt2;
 		Statement stmt4;
 		
-		ResultSet rs;
+		ResultSet rs; //initialization of result sets.
 		ResultSet rs2;
 		ResultSet rs4;
 	
 	
 	
-				pw.println("<HTML>");
+				pw.println("<HTML>"); //generating page
 				pw.println("<BODY>");
 				pw.println("<table>");
 				pw.println("<tr>");
@@ -57,31 +56,31 @@ public class SurveyResults extends HttpServlet {
 				pw.println("</tr>");
 				pw.println("</table>");	
 				
-				float scounter= 0;
+				float scounter= 0; //initialization of counters
 				float acounter=0;
 				
-				String id = request.getParameter("id");
-				String questionid = null;
-				String question = null;
-				String question2 = null;				
+				String id = request.getParameter("id"); //requests parameter "id". Gets the id of survey, and saves it to string.
+				String questionid = null; 
+				String question = null; //initialization for question picker 
+				String question2 = null; //initialization for question for results			
 						try
 						{
-							String connectionURL = "jdbc:mysql://localhost/mydb";
+							String connectionURL = "jdbc:mysql://localhost/mydb"; //path for mysql connection.
 							  
-							Class.forName("com.mysql.jdbc.Driver");
-							con = DriverManager.getConnection (connectionURL, "root", "root"); 
-							stmt = con.createStatement();
+							Class.forName("com.mysql.jdbc.Driver"); // load the database driver.
+							con = DriverManager.getConnection (connectionURL, "root", "root"); //connectionURL declared before and username/password for mysql.
+							stmt = con.createStatement(); //initialization of statements
 							stmt2 = con.createStatement();
 							stmt4 = con.createStatement();
-							pw.println("<h3>See results for question: </h3>");
-							pw.println("<select name='id' form='question'>");
-							rs4  = stmt4.executeQuery("SELECT idSurvey,Question from Survey;");
-							pw.println("<option selected='" + questionid + "'>");
-							while(rs4.next())
+							pw.println("<h3>See results for question: </h3>"); //page generation 
+							pw.println("<select name='id' form='question'>"); //drop down menu list
+							rs4  = stmt4.executeQuery("SELECT idSurvey,Question from Survey;"); //query for drop down menu list
+							pw.println("<option selected='" + questionid + "'>"); 
+							while(rs4.next()) //get data from results set returned by jdbc
 							{
-								 question = rs4.getString("Question");
-								 questionid = rs4.getString("idSurvey");
-								pw.println("<option value='" + questionid + "'>Question: " + questionid + " - "+ question + "</option>");
+								 question = rs4.getString("Question");  // question value from database
+								 questionid = rs4.getString("idSurvey"); // question id value from database
+								pw.println("<option value='" + questionid + "'>Question: " + questionid + " - "+ question + "</option>"); 
 							}
 							pw.println("</select>");
 							pw.println("<br >");
@@ -91,27 +90,27 @@ public class SurveyResults extends HttpServlet {
 							pw.println("</form>");
 							
 							
-							if (id !="")
+							if (id !="")  //checks if id is set. Opens a question if id is set.
 							
 							{
-								rs = stmt.executeQuery("Select Question,SubmitCounter from Survey where idSurvey = "+ id + "");
-								rs2=stmt2.executeQuery("Select Answer,AnswerCounter from Answers where idSurvey = "+ id + "");
+								rs = stmt.executeQuery("Select Question,SubmitCounter from Survey where idSurvey = "+ id + ""); //query for listing question and submit counter
+								rs2=stmt2.executeQuery("Select Answer,AnswerCounter from Answers where idSurvey = "+ id + ""); //query for listing answer and answer counter
 								
-								while (rs.next())
+								while (rs.next()) //get data from results set returned by jdbc
 						    	{
-									 question2 = rs.getString("Question");
-						    		 scounter = rs.getInt("SubmitCounter");
+									 question2 = rs.getString("Question"); //value of selected question
+						    		 scounter = rs.getInt("SubmitCounter"); //value of submit counter
 						    	}
-								String columnValue;
+								String columnValue; //initialization for generating a table
 								
 								
-								pw.println("<h3>Results for question:</h3>");
-								pw.println("<h4>"+ question2 +"</h4>");
+								pw.println("<h3>Results for question:</h3>"); //generating a result report
+								pw.println("<h4>"+ question2 +"</h4>"); //name of question
 								
-								pw.println("Number of total votes: " +(int) scounter +"");
+								pw.println("Number of total votes: " +(int) scounter +""); //total votes of that survey.Submit counter as integer value
 								
-								pw.println("<br/><br/>");
-								pw.println("<table  width=\"300\" border='1'>");
+								pw.println("<br/><br/>"); 
+								pw.println("<table  width=\"300\" border='1'>"); //table generation
 								pw.println("<tr>");
 								pw.println("<th>");
 								pw.println("Answer");
@@ -123,13 +122,13 @@ public class SurveyResults extends HttpServlet {
 								pw.println("Percent %");
 								pw.println("</th>");
 								pw.println("</tr>");
-								while(rs2.next())
+								while(rs2.next()) //get data from results set returned by jdbc
 									{			columnValue = rs2.getString("Answer");
 												acounter = rs2.getInt("AnswerCounter");
-											   if (scounter == 0)
+											   if (scounter == 0) // if scounter is 0 , percent value will be 0 instead of NaN
 											   {
-												   float percent = 0;
-												   pw.println("<tr>");																						
+												   float percent = 0; 
+												   pw.println("<tr>");	//table generation																			
 													pw.println("<td align=\"center\">");
 													pw.println(columnValue);
 													pw.println("</td>");
@@ -141,9 +140,9 @@ public class SurveyResults extends HttpServlet {
 													pw.println("</td>");
 													pw.println("</tr>");	
 											   }
-											   else{
-												float percent =  (acounter / scounter)*100;
-												pw.println("<tr>");																						
+											   else{ //for every other value of scounter, percent value will be calculated
+												float percent =  (acounter / scounter)*100; //formula for calculation
+												pw.println("<tr>");	  //table generation																				
 												pw.println("<td align=\"center\">");
 												pw.println(columnValue);
 												pw.println("</td>");

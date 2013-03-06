@@ -29,90 +29,89 @@ public class Submit extends HttpServlet {
     }
 
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 String connectionURL = "jdbc:mysql://localhost/mydb";
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { //Request - response method -> GET method.
+		 String connectionURL = "jdbc:mysql://localhost/mydb"; //path for mysql connection.
 		 Connection connection=null;	  
-		  response.setContentType("text/html");
+		  response.setContentType("text/html"); //response to the client is sent by text.
 		  PrintWriter out = response.getWriter();  
-		  String radio = request.getParameter("radio");
-		  String[] checkbox = request.getParameterValues("checkbox");
-		  String survey_id = request.getParameter("id");
-		  int id = Integer.parseInt(survey_id);
-		  int acounter = 0;
-		  int scounter = 0;
-			Statement stmt;
+		  String radio = request.getParameter("radio"); //requests parameter "radio", and saves it to string. If user selects single choice survey (upon creation) value radio will be filled.
+		  String[] checkbox = request.getParameterValues("checkbox"); //requests parameter "checkbox". Multiple choice answers. Saves all values that are checked in array.
+		  String survey_id = request.getParameter("id"); //requests parameter "id". Gets the id of survey, and saves it to string.
+		  int id = Integer.parseInt(survey_id); //converts string above to integer.
+		  int acounter = 0; //initialization of answer counter -> counts "clicks" on answers.
+		  int scounter = 0; //initialization of submit counter -> counts submits when survey is filled.
+			Statement stmt; //initialization of statements.
 			Statement stmt2;
-			ResultSet rs;
+			ResultSet rs; //initialization of result sets.
 			ResultSet rs2;
 			
-int aid=0;
 		  try 
 		  {
 			  
-			  Class.forName("com.mysql.jdbc.Driver");
+			  Class.forName("com.mysql.jdbc.Driver");  // load the database driver.
 			  
 			  connection = DriverManager.getConnection
-			  (connectionURL, "root", "root"); 
-			  stmt = connection.createStatement();
+			  (connectionURL, "root", "root");  //connectionURL declared before and username/password for mysql.
+			  stmt = connection.createStatement();  //statement for query
 			  stmt2 = connection.createStatement();
 			  
-			if (radio != null)
+			if (radio != null) //execution only if survey type is single choice
 			  {
-			  rs = stmt.executeQuery("SELECT idAnswers,AnswerCounter FROM answers where Answer= '"+ radio +"' AND idSurvey = "+ id +";");
-			  rs2 = stmt2.executeQuery("SELECT SubmitCounter FROM survey where idSurvey = "+ id +";");
+			  rs = stmt.executeQuery("SELECT AnswerCounter FROM answers where Answer= '"+ radio +"' AND idSurvey = "+ id +";"); //query for database, returns result set by jdbc. Gets status of Answer counter
+			  rs2 = stmt2.executeQuery("SELECT SubmitCounter FROM survey where idSurvey = "+ id +";"); //query for database, returns result set by jdbc. Gets status of Submit counter.
 			  
-				 while (rs.next())
+				 while (rs.next()) //get data from results set returned by jdbc
 				 {
-					 acounter = rs.getInt("AnswerCounter");
-					 aid = rs.getInt("idAnswers");
+					 acounter = rs.getInt("AnswerCounter"); //answer counter value
+					 
 				 }
-				 while (rs2.next())
+				 while (rs2.next()) //get data from results set returned by jdbc
 				 {
-					 scounter=rs2.getInt(1);
+					 scounter=rs2.getInt(1); //submit counter value
 				 }
-				 acounter++;
-				 scounter++;
-				 String sql = "UPDATE answers SET AnswerCounter = "+ acounter + " WHERE Answer = '"+ radio +"' AND idSurvey ="+ id +" AND idAnswers = "+aid+";";
-				 PreparedStatement pst = connection.prepareStatement(sql);
-				 pst.executeUpdate();
-				 pst.close();	
-				 String sql2 = "UPDATE survey SET SubmitCounter = "+ scounter + " WHERE idSurvey ="+ id +";";
+				 acounter++; //increment of answer counter
+				 scounter++; //increment of submit counter
+				 String sql = "UPDATE answers SET AnswerCounter = "+ acounter + " WHERE Answer = '"+ radio +"' AND idSurvey ="+ id + ";"; //updates the answer counter in database
+				 PreparedStatement pst = connection.prepareStatement(sql); 
+				 pst.executeUpdate(); //executes updates to database
+				 pst.close();	 //closes connection
+				 String sql2 = "UPDATE survey SET SubmitCounter = "+ scounter + " WHERE idSurvey ="+ id +";"; //updates the submit counter in database 
 				 PreparedStatement pst2 = connection.prepareStatement(sql2);
-				 pst2.executeUpdate();
-				 pst2.close();		
-				 out.println("You have successfully voted for answer: "+ radio +"!");
+				 pst2.executeUpdate();//executes updates to database
+				 pst2.close(); //closes connection		
+				 out.println("You have successfully voted for answer: "+ radio +"!"); //message for voting with answer
 				 out.println("<br/>");
 				 out.println("Thank You");
 				 out.println("<a href=\"http://localhost:8080/Login/survey_index.jsp\">Click here to get back</a>");	
 			  }
-			  else {
-				  for(int i=0; i<checkbox.length; i++)
+			  else { //execution if survey type is other than single choice (multiple choice)
+				  for(int i=0; i<checkbox.length; i++) //for loop. Counts the length of array "checkbox", and executes query until all of checked answers are submitted.
 				  {
-				  rs = stmt.executeQuery("SELECT idAnswers,AnswerCounter FROM answers where Answer= '"+ checkbox[i] +"' AND idSurvey = "+ id +";");
-				  rs2 = stmt2.executeQuery("SELECT SubmitCounter FROM survey where idSurvey = "+ id +";");
-							  while (rs.next())
+				  rs = stmt.executeQuery("SELECT AnswerCounter FROM answers where Answer= '"+ checkbox[i] +"' AND idSurvey = "+ id +";");  //query for database, returns result set by jdbc. Gets status of Answer counter
+				  rs2 = stmt2.executeQuery("SELECT SubmitCounter FROM survey where idSurvey = "+ id +";"); //query for database, returns result set by jdbc. Gets status of Submit counter.
+							  while (rs.next())  //get data from results set returned by jdbc
 							  {
-								 acounter = rs.getInt("AnswerCounter");
-								 aid = rs.getInt("idAnswers");
+								 acounter = rs.getInt("AnswerCounter"); //answer counter value
+								
 							  }
-							  while (rs2.next())
+							  while (rs2.next())  //get data from results set returned by jdbc
 							  {
-								 scounter=rs2.getInt(1);
+								 scounter=rs2.getInt(1); //submit counter value
 							  }
-						 acounter++;
-						 scounter++;
-						 String sql = "UPDATE answers SET AnswerCounter = "+ acounter + " WHERE Answer = '"+ checkbox[i] +"' AND idSurvey ="+ id +" AND idAnswers ="+ aid +";";
+						 acounter++;  //increment of answer counter
+						 scounter++; //increment of submit counter
+						 String sql = "UPDATE answers SET AnswerCounter = "+ acounter + " WHERE Answer = '"+ checkbox[i] +"' AND idSurvey ="+ id +";";  //updates the answer counter in database
 						 PreparedStatement pst = connection.prepareStatement(sql);
-						 pst.executeUpdate();
-						 pst.close();	
-						 out.println("You have successfully voted for answer: "+ checkbox[i] +"!");
+						 pst.executeUpdate(); //executes updates to database
+						 pst.close();	//closes connection
+						 out.println("You have successfully voted for answer: "+ checkbox[i] +"!"); //message for voting with answer
 						 out.println("<br>");
 				  	
 				  		 
-						 String sql2 = "UPDATE survey SET SubmitCounter = "+ scounter + " WHERE idSurvey ="+ id +";";
+						 String sql2 = "UPDATE survey SET SubmitCounter = "+ scounter + " WHERE idSurvey ="+ id +";"; //updates the submit counter in database 
 						 PreparedStatement pst2 = connection.prepareStatement(sql2);
-						 pst2.executeUpdate();
-						 pst2.close();		
+						 pst2.executeUpdate(); //executes updates
+						 pst2.close();	//closes connection		
 				  }
 						 out.println("<br/>");
 						 out.println("Thank You");
@@ -121,7 +120,7 @@ int aid=0;
 			  }
 		  }
 		  
-  catch(ClassNotFoundException e)
+  catch(ClassNotFoundException e) //SQL recovery
   {
 	  out.println("Couldn't load database driver: " 
 	  + e.getMessage());

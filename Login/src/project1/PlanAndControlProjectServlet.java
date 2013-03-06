@@ -158,8 +158,8 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 			if (!plan.next())
 			{
 				// ne moze biti ulogiran profesor/asistent
-				// redirekcija na pocetnu stranicu
-				// response.sendRedirect("/SPtool/pocetna stranica");
+				out.println("Project database is empty!<br/><br/><hr/><hr/><br/>");
+				out.println("<a href='javascript:javascript:history.go(-1)'>Back</a><br/>");
 			}
 			//ako resultset nije prazan
 			else
@@ -241,7 +241,8 @@ public class PlanAndControlProjectServlet extends HttpServlet {
 					}
 					// ako je ulogiran netko tko nije projekni manager prikazi poruku
 					// bilo bi dobro omogucit prikaz svih kreiranih verzija projektnog plana
-					else
+					else out.println("Project plan doesn't exist in database yet");
+					if (role.compareTo("Prof") == 0)
 					{
 						out.println("Project plan doesn't exist in database yet");
 					}

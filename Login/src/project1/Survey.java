@@ -14,25 +14,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class Survey extends HttpServlet{
-public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+private static final long serialVersionUID = 1L;
+
+public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException //Request - response method -> GET method.
 	{
-		res.setContentType("text/html");
+		res.setContentType("text/html");  //response to the client is sent by text.
 		PrintWriter pw = res.getWriter();
-		Connection con;
-		Statement stmt;
+		Connection con; 
+		Statement stmt; //initialization of statements.
 		Statement stmt2;
 		Statement stmt3;
 		Statement stmt4;
 		
-		ResultSet rs;
+		ResultSet rs; //initialization of result sets.
 		ResultSet rs2;
 		ResultSet rs3;
 		ResultSet rs4;
 	
 	
 	
-				pw.println("<HTML>");
+				pw.println("<HTML>"); //page generation
 				pw.println("<BODY>");
+				pw.println("<HEAD>");
+				
+				
+				pw.println("</HEAD>");
 				pw.println("<table>");
 				pw.println("<tr>");
 				pw.println("<td style=\"background-color:#0066FF; width:1000px; height:10px\">");
@@ -44,88 +50,88 @@ public void doGet(HttpServletRequest req, HttpServletResponse res) throws Servle
 				pw.println("</table>");
 				
 				
-	String type = null;
-	String id = req.getParameter("id");
-	String questionid = null;
+	String type = null; 
+	String id = req.getParameter("id"); //requests parameter "id", and saves it to string. 
+	String questionid = null; 
 	String question = null;
 					
 			try
 			{
-				String connectionURL = "jdbc:mysql://localhost:3306/mydb";
+				String connectionURL = "jdbc:mysql://localhost/mydb"; //path for mysql connection.
 				  
-				Class.forName("com.mysql.jdbc.Driver");
-				con = DriverManager.getConnection (connectionURL, "root", "root"); 
-				stmt = con.createStatement();
+				Class.forName("com.mysql.jdbc.Driver"); // Load the database driver
+				con = DriverManager.getConnection (connectionURL, "root", "root"); //connectionURL declared before and username/password for mysql.
+				stmt = con.createStatement(); //statement creation
 				stmt2 = con.createStatement();
 				stmt3 = con.createStatement();
 				stmt4 = con.createStatement();
-				pw.println("<h3>Avaliable questions: </h3>");
+				pw.println("<h3>Avaliable questions: </h3>"); 
 				pw.println("<select name='id' form='question'>");
-				rs4  = stmt4.executeQuery("SELECT idSurvey,Question from Survey;");
-				pw.println("<option selected='" + questionid + "'>");
-				while(rs4.next())
+				rs4  = stmt4.executeQuery("SELECT idSurvey,Question from Survey;"); //query for all questions in database
+				pw.println("<option selected='" + questionid + "'>"); //list of questions in database
+				while(rs4.next()) //get data from results set returned by jdbc
 				{
 					 question = rs4.getString("Question");
 					 questionid = rs4.getString("idSurvey");
-					pw.println("<option value='" + questionid + "'>Question: " + questionid + " - "+ question + "</option>");
+					pw.println("<option value='" + questionid + "'>Question: " + questionid + " - "+ question + "</option>"); //drop down menu list 
 				}
 
 				pw.println("</select>");
 				pw.println("<br >");
 				pw.println("<form action=\"Survey\" id=\"question\">");
 				pw.println("<br >");
-				pw.println( "<input type=\"submit\" value=\"Open question\">");
+				pw.println( "<input type=\"submit\" value=\"Open question\">"); //button for opening a question from list
 				pw.println("</form>");
 				
-				if (id !="")
+				if (id !="") //checks if id is set. Opens a question if id is set.
 				
 				{
 					rs4.close();
-					rs = stmt.executeQuery("Select Answer from answers where idSurvey = "+ id + "");
-					rs2=stmt2.executeQuery("Select Question from survey where idSurvey = "+ id + "");
-				    rs3=stmt3.executeQuery("Select Type from survey where idSurvey = "+ id + "");
+					rs = stmt.executeQuery("Select Answer from answers where idSurvey = "+ id + ""); //query for listing all answers
+					rs2=stmt2.executeQuery("Select Question from survey where idSurvey = "+ id + ""); //query for listing questions
+				    rs3=stmt3.executeQuery("Select Type from survey where idSurvey = "+ id + ""); //query for selecting type
 				    
 		
-				    	while (rs3.next())
+				    	while (rs3.next()) //get data from results set returned by jdbc
 				    	{
-				    		type = rs3.getString(1);
+				    		type = rs3.getString(1); //type value
 				    	}
 			
 					
-					pw.println("<h3>Question:</h3>");
+					pw.println("<h3>Pitanje:</h3>"); 
 					String value;
-					while(rs2.next())
+					while(rs2.next())  //get data from results set returned by jdbc
 					{
-						pw.println("<h4>");
-						value = rs2.getString(1);
+						pw.println("<h4>"); 
+						value = rs2.getString(1); //question value 
 						pw.println(value);
 						pw.println("</h4>");
 					}
 					String columnValue;
 					ResultSetMetaData r = (ResultSetMetaData) rs.getMetaData();
-					int numofcol = r.getColumnCount();
+					int numofcol = r.getColumnCount(); 
 					
 					
 					pw.println("<table  width=\"300\">");
 					pw.println("<form name\"myform\" action=\"Submit\" method=\"get\">");
-					while(rs.next())
+					while(rs.next()) //get data from results set returned by jdbc
 						{			
-								for (int j = 1 ; j <= numofcol; j++)
+								for (int j = 1 ; j <= numofcol; j++) //generating survey (rows and columns)
 								{
-									columnValue = rs.getString(j);
+									columnValue = rs.getString(j); //answers
 									pw.println("<tr>");
 									pw.println("<td>");				
-									pw.println(columnValue);
-									if (type.equalsIgnoreCase("single"))
+									pw.println(columnValue); //answer value generated and displayed to user
+									if (type.equalsIgnoreCase("single")) //if survey is single choice ...
 										{
 											pw.println("<td>");
-											pw.println("<input type=\"radio\" name=\"radio\" value=\""+ columnValue +"\">");
+											pw.println("<input type=\"radio\" name=\"radio\" value=\""+ columnValue +"\">"); //... input type will be radio
 											pw.println("</td>");
 										}
-									else if (type.equalsIgnoreCase("multi")) 
+									else if (type.equalsIgnoreCase("multi")) //if survey is multiple choice ...
 										{
 											pw.println("<td>");
-											pw.println("<input type=\"checkbox\" name=\"checkbox\" value=\""+ columnValue +"\">");
+											pw.println("<input type=\"checkbox\" name=\"checkbox\" value=\""+ columnValue +"\">");//... input type is checkbox
 											pw.println("</td>");	
 										}	
 								}
@@ -135,7 +141,7 @@ public void doGet(HttpServletRequest req, HttpServletResponse res) throws Servle
 						}				
 						pw.println("<tr>");
 						pw.println("<td>");
-						pw.println("<input type=\"hidden\" name=\"id\" value=\"" + id + "\"/>");
+						pw.println("<input type=\"hidden\" name=\"id\" value=\"" + id + "\"/>"); //submits id if user want to vote for some other question
 						pw.println("<input type=\"submit\" value=\"Submit\"/>");
 						pw.println("<input type=button onClick=\"location.href='http://localhost:8080/Login/survey_index.jsp'\" value='Go back'>");
 						pw.println("</form>");
@@ -146,6 +152,7 @@ public void doGet(HttpServletRequest req, HttpServletResponse res) throws Servle
 						pw.println("</BODY>");
 						pw.println("</HTML>");
 					}
+			
 			}
 		catch (Exception e)
 				{
